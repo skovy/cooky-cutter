@@ -1,5 +1,5 @@
 {
-  "name": "cookie-cutter-bot",
+  "name": "cooky-cutter",
   "version": "0.0.1",
   "description": "Typed JavaScript object factories for testing",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Skovy/cookie-cutter-bot.git"
+    "url": "git+https://github.com/Skovy/cooky-cutter.git"
   },
   "author": "Spencer Miskoviak",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Skovy/cookie-cutter-bot/issues"
+    "url": "https://github.com/Skovy/cooky-cutter/issues"
   },
-  "homepage": "https://github.com/Skovy/cookie-cutter-bot#readme",
+  "homepage": "https://github.com/Skovy/cooky-cutter#readme",
   "devDependencies": {
     "@types/jest": "^23.1.1",
     "jest": "^23.1.0",
