@@ -1,4 +1,5 @@
 import { create, sequence, random } from "../index";
+import { MIN_RANDOM_VALUE, MAX_RANDOM_VALUE } from "../helpers";
 
 type User = { age: number };
 
@@ -22,15 +23,15 @@ describe("helpers", () => {
   });
 
   describe("random", () => {
-    test("returns a random number between 1 and MAX_VALUE inclusive", () => {
+    test("returns a random number", () => {
       const user = create<User>({
         age: random
       });
 
       const { age } = user();
 
-      expect(age).toBeGreaterThanOrEqual(1);
-      expect(age).toBeLessThanOrEqual(Number.MAX_VALUE);
+      expect(age).toBeGreaterThanOrEqual(MIN_RANDOM_VALUE);
+      expect(age).toBeLessThanOrEqual(MAX_RANDOM_VALUE);
     });
   });
 });
