@@ -1,5 +1,5 @@
 {
-  "name": "sculpture",
+  "name": "cookie-cutter-bot",
   "version": "0.0.1",
   "description": "Typed JavaScript object factories for testing",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Skovy/sculpture.git"
+    "url": "git+https://github.com/Skovy/cookie-cutter-bot.git"
   },
   "author": "Spencer Miskoviak",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Skovy/sculpture/issues"
+    "url": "https://github.com/Skovy/cookie-cutter-bot/issues"
   },
-  "homepage": "https://github.com/Skovy/sculpture#readme",
+  "homepage": "https://github.com/Skovy/cookie-cutter-bot#readme",
   "devDependencies": {
     "typescript": "^2.9.2"
   }
