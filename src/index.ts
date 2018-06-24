@@ -1,3 +1,2 @@
-export function create(str: any) : object {
-  return { hello: "world" + str };
-}
+export { create } from "./create";
+export { random, sequence } from "./helpers";
