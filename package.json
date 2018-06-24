@@ -6,7 +6,10 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "preversion": "npm test",
+    "version": "npm run build",
+    "postversion": "git push origin master --tags"
   },
   "repository": {
     "type": "git",
