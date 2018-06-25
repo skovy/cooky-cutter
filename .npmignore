@@ -1,1 +1,5 @@
+# Avoid publishing the source code in the package
 src/
+
+# Avoid publishing the built tests in the package
+dist/__tests__/
