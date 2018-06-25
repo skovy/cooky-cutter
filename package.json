@@ -9,7 +9,8 @@
     "test": "jest",
     "preversion": "npm test",
     "version": "npm run build",
-    "postversion": "git push origin master --tags"
+    "postversion": "git push origin master --tags",
+    "check-types": "npm run build --noEmit"
   },
   "repository": {
     "type": "git",
