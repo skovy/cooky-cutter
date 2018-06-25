@@ -33,7 +33,7 @@ yarn add --dev  cooky-cutter
 ## Usage
 
 ```typescript
-import { create, random, sequence } from "cooky-cutter";
+import { define, random, sequence } from "cooky-cutter";
 
 // Define an interface (or type) for the entity
 interface User {
@@ -43,8 +43,8 @@ interface User {
   age: number;
 }
 
-// Create a factory that represents the defined interface
-const user = create<User>({
+// Define a factory that represents the defined interface
+const user = define<User>({
   id: random,
   firstName: i => `Bob #${i}`,
   lastName: "Smith",
