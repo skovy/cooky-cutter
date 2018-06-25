@@ -3,10 +3,10 @@
  *
  * @param functionToCheck value to check if it is a function
  */
-export const isFunction = (
-  functionToCheck: any
-): functionToCheck is Function => {
+const isFunction = (functionToCheck: any): functionToCheck is Function => {
   return (
     functionToCheck && {}.toString.call(functionToCheck) === "[object Function]"
   );
 };
+
+export { isFunction };
