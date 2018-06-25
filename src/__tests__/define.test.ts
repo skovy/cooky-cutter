@@ -1,7 +1,7 @@
 import { define } from "../index";
 
 type User = { firstName: string; age: number };
-type Post = { title: string, user: User };
+type Post = { title: string; user: User };
 
 describe("define", () => {
   test("handles hardcoded attributes", () => {
@@ -42,8 +42,8 @@ describe("define", () => {
 
   test("passes the number of invocations to functional attributes", () => {
     const user = define<User>({
-      firstName: i => `Bob #${i}`,
-      age: i => i * 42
+      firstName: (i: number) => `Bob #${i}`,
+      age: (i: number) => i * 42
     });
 
     // First invocation
@@ -77,11 +77,33 @@ describe("define", () => {
     });
 
     expect(post()).toEqual({
-      title:  "The Best Post Ever",
+      title: "The Best Post Ever",
       user: {
         firstName: "Bob",
         age: 42
       }
+    });
+  });
+
+  test("allows overriding the initial config", () => {
+    const user = define<User>({
+      firstName: "Bob",
+      age: 42
+    });
+
+    expect(user({ firstName: "Sarah" })).toEqual({
+      firstName: "Sarah",
+      age: 42
+    });
+
+    expect(user({ age: (i: number) => i })).toEqual({
+      firstName: "Bob",
+      age: 2
+    });
+
+    expect(user({ firstName: "Jill", age: 43 })).toEqual({
+      firstName: "Jill",
+      age: 43
     });
   });
 });
