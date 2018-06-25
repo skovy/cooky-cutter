@@ -1,10 +1,11 @@
-import { create } from "../index";
+import { define } from "../index";
 
 type User = { firstName: string; age: number };
+type Post = { title: string, user: User };
 
-describe("create", () => {
-  test("handles string and number attributes", () => {
-    const user = create<User>({
+describe("define", () => {
+  test("handles hardcoded attributes", () => {
+    const user = define<User>({
       firstName: "Bob",
       age: 42
     });
@@ -16,7 +17,7 @@ describe("create", () => {
   });
 
   test("handles functional attributes", () => {
-    const user = create<User>({
+    const user = define<User>({
       firstName: () => "Bob",
       age: () => 42
     });
@@ -28,7 +29,7 @@ describe("create", () => {
   });
 
   test("returns a factory that returns a new instance each invocation", () => {
-    const user = create<User>({
+    const user = define<User>({
       firstName: () => "Bob",
       age: () => 42
     });
@@ -40,7 +41,7 @@ describe("create", () => {
   });
 
   test("passes the number of invocations to functional attributes", () => {
-    const user = create<User>({
+    const user = define<User>({
       firstName: i => `Bob #${i}`,
       age: i => i * 42
     });
@@ -61,6 +62,26 @@ describe("create", () => {
     expect(user()).toEqual({
       firstName: "Bob #3",
       age: 126
+    });
+  });
+
+  test("handles nested factores", () => {
+    const user = define<User>({
+      firstName: "Bob",
+      age: 42
+    });
+
+    const post = define<Post>({
+      title: "The Best Post Ever",
+      user
+    });
+
+    expect(post()).toEqual({
+      title:  "The Best Post Ever",
+      user: {
+        firstName: "Bob",
+        age: 42
+      }
     });
   });
 });

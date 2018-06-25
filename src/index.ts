@@ -1,2 +1,2 @@
-export { create } from "./create";
+export { define } from "./define";
 export { random, sequence } from "./helpers";

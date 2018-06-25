@@ -3,7 +3,7 @@ import { isFunction } from "./utils";
 type Config<T> = { [P in keyof T]: T[P] | ((i: number) => T[P]) };
 
 /**
- * Create a new factory function. The return value is a function that can be
+ * Define a new factory function. The return value is a function that can be
  * invoked as many times as needed to create a given type of object. Use the 
  * config param to define how the object is generated on each invocation.
  * 
@@ -11,7 +11,7 @@ type Config<T> = { [P in keyof T]: T[P] | ((i: number) => T[P]) };
  * key can either be a static value, or a function that receives the invocation
  * count as the only parameter.
  */
-export function create<Result>(config: Config<Result>): () => Result {
+export function define<Result>(config: Config<Result>): () => Result {
   let invocations = 0;
 
   return (): Result => {

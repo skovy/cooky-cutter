@@ -1,4 +1,4 @@
-import { create, sequence, random } from "../index";
+import { define, sequence, random } from "../index";
 import { MIN_RANDOM_VALUE, MAX_RANDOM_VALUE } from "../helpers";
 
 type User = { age: number };
@@ -6,7 +6,7 @@ type User = { age: number };
 describe("helpers", () => {
   describe("sequence", () => {
     test("increments each time a factory is invoked", () => {
-      const user = create<User>({
+      const user = define<User>({
         age: sequence
       });
 
@@ -24,7 +24,7 @@ describe("helpers", () => {
 
   describe("random", () => {
     test("returns a random number", () => {
-      const user = create<User>({
+      const user = define<User>({
         age: random
       });
 
