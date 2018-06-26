@@ -1,20 +1,17 @@
-import { Factory, Config, FactoryConfig, AttributeFunction } from "./define";
-import { isFunction } from "./utils";
+import { Factory, Config, FactoryConfig, AttributeFunction } from "./index";
+import { isFunction, DiffProperties } from "./utils";
 
-// Returns a union of the keys.
-// e.g. it will convert `{ a: {}, b: {} }` into `"a" | "b"`
-type Keys<T> = keyof T;
-
-// Remove types from T that are assignable to U
-// e.g. it will convert `Diff<"a" | "b" | "d", "a" | "f">` into `"b" | "d"`
-type Diff<T, U> = T extends U ? never : T;
-
-// Remove attributes from T that are in U
-// e.g. it will convert
-// `DiffProperties<{ a: string; b: number; }, { a: string; c: string; }>`
-// into `{ b: number; }`
-type DiffProperties<T, U> = Pick<T, Diff<Keys<T>, Keys<U>>>;
-
+/**
+ * Define a new factory function from an existing fatory. The return value is a
+ * function that can be invoked as many times as needed to create a given type
+ * of object. Use the config param to define how the object is generated on each
+ * invocation.
+ *
+ * @param from An existing factory to extend.
+ * @param config An object that defines how the factory should generate objects.
+ * Each key can either be a static value, a function that receives the
+ * invocation count as the only parameter or another factory.
+ */
 function extend<From, Result extends From>(
   from: Factory<From>,
   config: Config<DiffProperties<Result, From>>
@@ -26,9 +23,9 @@ function extend<From, Result extends From>(
     let result = from(override as FactoryConfig<From>) as Result;
 
     for (let k in config) {
-      // TODO: the type of k is not properly inferred 
+      // TODO: the type of k is not properly inferred
       let key = k as Extract<keyof Result, string>;
-      const value = override[key] ? override[key] : config[key as string]
+      const value = override[key] ? override[key] : config[key as string];
 
       if (isFunction(value)) {
         // TODO: find a better way to distinguish AttributeFunction vs Factory

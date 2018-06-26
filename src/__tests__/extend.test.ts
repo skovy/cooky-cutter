@@ -1,5 +1,4 @@
-import { define, extend } from "../index";
-import { sequence } from "../helpers";
+import { define, extend, sequence } from "../index";
 
 type Model = { id: number };
 type User = { firstName: string; age: number } & Model;
