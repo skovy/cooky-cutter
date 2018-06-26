@@ -1,13 +1,14 @@
 import { isFunction } from "./utils";
 
-type Config<Result> = {
-  [Key in keyof Result]:
-    | Result[Key]
-    | ((invocation: number) => Result[Key])
-    | FactoryFunction<Result[Key]>
+type Config<T> = {
+  [Key in keyof T]: T[Key] | AttributeFunction<T[Key]> | Factory<T[Key]>
 };
 
-type FactoryFunction<Result> = (override?: Partial<Config<Result>>) => Result;
+type AttributeFunction<T> = (invocation: number) => T;
+
+type FactoryConfig<T> = Partial<Config<T>>;
+
+type Factory<T> = (override?: FactoryConfig<T>) => T;
 
 /**
  * Define a new factory function. The return value is a function that can be
@@ -18,12 +19,12 @@ type FactoryFunction<Result> = (override?: Partial<Config<Result>>) => Result;
  * key can either be a static value, or a function that receives the invocation
  * count as the only parameter.
  */
-function define<Result>(config: Config<Result>): FactoryFunction<Result> {
+function define<Result>(config: Config<Result>): Factory<Result> {
   let invocations = 0;
 
   return (override = {}) => {
     invocations++;
-    let result: Result = {} as any;
+    let result = {} as Result;
 
     for (let key in config) {
       const value = override[key] ? override[key] : config[key];
@@ -31,7 +32,7 @@ function define<Result>(config: Config<Result>): FactoryFunction<Result> {
       if (isFunction(value)) {
         result[key] = value(invocations);
       } else {
-        // NOTE: Ideally we can infer this is _not_ a function without the cast.
+        // TODO: Ideally we can avoid this cast.
         result[key] = value as Result[Extract<keyof Result, string>];
       }
     }
@@ -40,4 +41,4 @@ function define<Result>(config: Config<Result>): FactoryFunction<Result> {
   };
 }
 
-export { define };
+export { define, AttributeFunction, Config, Factory, FactoryConfig };
