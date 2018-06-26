@@ -70,5 +70,11 @@ describe("extend", () => {
         age: 42
       }
     });
+
+    expect(user()).toEqual({
+      id: 3,
+      firstName: "Bob",
+      age: 42
+    });
   });
 });
