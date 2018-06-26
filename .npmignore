@@ -3,3 +3,9 @@ src/
 
 # Avoid publishing the built tests in the package
 dist/__tests__/
+
+# Avoid publishing the Travis config
+.travis.yml
+
+# Avoid publishing the Jest config
+jest.config.js
