@@ -1,7 +1,7 @@
 import { define, extend, sequence } from "../index";
 
 type Model = { id: number; type?: string };
-type User = { firstName: string; age: number } & Model;
+type User = { firstName: string; age: number; admin?: boolean } & Model;
 type Post = { title: string; user: User } & Model;
 
 describe("extend", () => {
@@ -94,6 +94,24 @@ describe("extend", () => {
       id: 3,
       firstName: "Bob",
       age: 42
+    });
+  });
+
+  test("allows defining optional attributes as overrides", () => {
+    const model = define<Model>({
+      id: sequence
+    });
+
+    const user = extend<Model, User>(model, {
+      firstName: "Bob",
+      age: 42
+    });
+
+    expect(user({ admin: true })).toEqual({
+      id: 1,
+      firstName: "Bob",
+      age: 42,
+      admin: true
     });
   });
 });
