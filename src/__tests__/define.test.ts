@@ -1,6 +1,6 @@
 import { define } from "../index";
 
-type User = { firstName: string; age: number };
+type User = { firstName: string; age: number; admin?: boolean };
 type Post = { title: string; user: User };
 
 describe("define", () => {
@@ -104,6 +104,19 @@ describe("define", () => {
     expect(user({ firstName: "Jill", age: 43 })).toEqual({
       firstName: "Jill",
       age: 43
+    });
+  });
+
+  test("allows defining optional attributes as overrides", () => {
+    const user = define<User>({
+      firstName: "Bob",
+      age: 42
+    });
+
+    expect(user({ firstName: "Sarah", admin: true })).toEqual({
+      firstName: "Sarah",
+      age: 42,
+      admin: true
     });
   });
 });

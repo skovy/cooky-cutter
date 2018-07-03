@@ -26,7 +26,9 @@ function define<Result>(config: Config<Result>): Factory<Result> {
     invocations++;
     let result = {} as Result;
 
-    for (let key in config) {
+    const values = Object.assign({}, config, override);
+
+    for (let key in values) {
       const value = override[key] ? override[key] : config[key];
 
       if (isFunction(value)) {
