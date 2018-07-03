@@ -7,20 +7,20 @@ import { isFunction, DiffProperties } from "./utils";
  * of object. Use the config param to define how the object is generated on each
  * invocation.
  *
- * @param from An existing factory to extend.
+ * @param base An existing factory to extend.
  * @param config An object that defines how the factory should generate objects.
  * Each key can either be a static value, a function that receives the
  * invocation count as the only parameter or another factory.
  */
-function extend<From, Result extends From>(
-  from: Factory<From>,
-  config: Config<DiffProperties<Result, From> & Partial<From>>
+function extend<Base, Result extends Base>(
+  base: Factory<Base>,
+  config: Config<DiffProperties<Result, Base> & Partial<Base>>
 ): Factory<Result> {
   let invocations = 0;
 
   return (override = {}) => {
     invocations++;
-    let result = from(override as FactoryConfig<From>) as Result;
+    let result = base(override as FactoryConfig<Base>) as Result;
 
     for (let k in config) {
       // TODO: the type of k is not properly inferred
