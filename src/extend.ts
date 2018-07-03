@@ -14,7 +14,7 @@ import { isFunction, DiffProperties } from "./utils";
  */
 function extend<From, Result extends From>(
   from: Factory<From>,
-  config: Config<DiffProperties<Result, From>>
+  config: Config<DiffProperties<Result, From> & Partial<From>>
 ): Factory<Result> {
   let invocations = 0;
 

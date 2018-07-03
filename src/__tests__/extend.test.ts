@@ -1,6 +1,6 @@
 import { define, extend, sequence } from "../index";
 
-type Model = { id: number };
+type Model = { id: number; type?: string };
 type User = { firstName: string; age: number } & Model;
 type Post = { title: string; user: User } & Model;
 
@@ -42,6 +42,26 @@ describe("extend", () => {
       id: -1,
       firstName: "Jill",
       age: 42
+    });
+  });
+
+  test("allows overriding the factory with the config", () => {
+    const model = define<Model>({
+      id: sequence,
+      type: "BaseModel"
+    });
+
+    const user = extend<Model, User>(model, {
+      firstName: "Bob",
+      age: 42,
+      type: "User"
+    });
+
+    expect(user()).toEqual({
+      id: 1,
+      firstName: "Bob",
+      age: 42,
+      type: "User"
     });
   });
 
