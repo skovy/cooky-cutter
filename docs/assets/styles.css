@@ -1,0 +1,8 @@
+.app-sub-sidebar li:before {
+  display: none;
+}
+
+/* Fix for linked code snippets having mismatched text and underline color */
+.markdown-section a code {
+  text-decoration: underline;
+}
