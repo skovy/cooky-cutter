@@ -15,8 +15,8 @@ type Factory<T> = (override?: FactoryConfig<T>) => T;
  * invoked as many times as needed to create a given type of object. Use the
  * config param to define how the object is generated on each invocation.
  *
- * @param config An object that defines how the factory should generate objects. 
- * Each key can either be a static value, a function that receives the 
+ * @param config An object that defines how the factory should generate objects.
+ * Each key can either be a static value, a function that receives the
  * invocation count as the only parameter or another factory.
  */
 function define<Result>(config: Config<Result>): Factory<Result> {
