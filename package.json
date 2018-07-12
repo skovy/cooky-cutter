@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Skovy/cooky-cutter.git"
+    "url": "git+https://github.com/skovy/cooky-cutter.git"
   },
   "author": "Spencer Miskoviak",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Skovy/cooky-cutter/issues"
+    "url": "https://github.com/skovy/cooky-cutter/issues"
   },
-  "homepage": "https://github.com/Skovy/cooky-cutter#readme",
+  "homepage": "https://github.com/skovy/cooky-cutter#readme",
   "devDependencies": {
     "@types/jest": "^23.1.1",
     "jest": "^23.1.0",
