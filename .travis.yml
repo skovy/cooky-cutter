@@ -4,6 +4,6 @@ node_js :
 install:
  - npm install
 script:
- - npm check-types
+ - npm run check-types
  - npm test
- - npm check-formatting
+ - npm run check-formatting
