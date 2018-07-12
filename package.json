@@ -10,7 +10,8 @@
     "preversion": "npm test",
     "version": "npm run build",
     "postversion": "git push origin master --tags",
-    "check-types": "npm run build --noEmit"
+    "check-types": "npm run build --noEmit",
+    "check-formatting": "./node_modules/.bin/prettier --list-different \"src/**/*.ts*\""
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@types/jest": "^23.1.1",
     "jest": "^23.1.0",
+    "prettier": "1.13.7",
     "ts-jest": "^22.4.6",
     "typescript": "^2.9.2"
   }
