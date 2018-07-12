@@ -25,9 +25,16 @@
   "homepage": "https://github.com/skovy/cooky-cutter#readme",
   "devDependencies": {
     "@types/jest": "^23.1.1",
+    "husky": "^0.14.3",
     "jest": "^23.1.0",
     "prettier": "1.13.7",
+    "pretty-quick": "^1.6.0",
     "ts-jest": "^22.4.6",
     "typescript": "^2.9.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
