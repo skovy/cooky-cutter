@@ -9,7 +9,7 @@ const MIN_RANDOM_VALUE = 1;
  * seeds or ids (to avoid tests passing as a result of ordering)
  */
 const random = () =>
-  Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE;
+  Math.floor(Math.random() * MAX_RANDOM_VALUE) + MIN_RANDOM_VALUE * "1";
 
 /**
  * Increment the attribute each time the factory is invoked. This is useful
