@@ -5,3 +5,4 @@ install:
  - npm install
 script:
  - npm test
+ - npm check-formatting
