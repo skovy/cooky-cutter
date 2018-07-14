@@ -6,13 +6,14 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "jest",
+    "test": "jest --coverage",
     "preversion": "npm test",
     "version": "npm run build",
     "postversion": "git push origin master --tags",
     "check-types": "npm run build --noEmit",
     "check-formatting": "./node_modules/.bin/prettier --list-different \"src/**/*.ts*\"",
-    "precommit": "pretty-quick --staged"
+    "precommit": "pretty-quick --staged",
+    "coverage": "nyc report --temp-directory=coverage --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -26,8 +27,10 @@
   "homepage": "https://github.com/skovy/cooky-cutter#readme",
   "devDependencies": {
     "@types/jest": "^23.1.1",
+    "coveralls": "^3.0.2",
     "husky": "^0.14.3",
     "jest": "^23.1.0",
+    "nyc": "^12.0.2",
     "prettier": "1.13.7",
     "pretty-quick": "^1.6.0",
     "ts-jest": "^22.4.6",

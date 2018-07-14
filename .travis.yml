@@ -1,5 +1,5 @@
-language : node_js
-node_js :
+language: node_js
+node_js:
  - stable
 install:
  - npm install
@@ -7,3 +7,4 @@ script:
  - npm run check-types
  - npm test
  - npm run check-formatting
+after_success: npm run coverage
