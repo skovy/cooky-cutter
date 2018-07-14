@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/skovy/cooky-cutter/issues"
   },
-  "homepage": "https://github.com/skovy/cooky-cutter#readme",
+  "homepage": "https://skovy.github.io/cooky-cutter/",
   "devDependencies": {
     "@types/jest": "^23.1.1",
     "coveralls": "^3.0.2",
