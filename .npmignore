@@ -9,3 +9,9 @@ dist/__tests__/
 
 # Avoid publishing the Jest config
 jest.config.js
+
+# Avoid publishing code coverage information
+coverage/
+
+# Avoid publishing the documentation
+docs/
