@@ -1,6 +1,6 @@
 {
   "name": "cooky-cutter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Typed JavaScript object factories for testing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
