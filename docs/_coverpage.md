@@ -1,6 +1,6 @@
 # 🍪 cooky-cutter
 
-> Typed JavaScript object factories for testing.
+> Object factories for testing in TypeScript.
 
 [![Travis branch](https://img.shields.io/travis/skovy/cooky-cutter/master.svg)](https://travis-ci.org/skovy/cooky-cutter)
 [![Coverage Status](https://coveralls.io/repos/github/skovy/cooky-cutter/badge.svg?branch=master)](https://coveralls.io/github/skovy/cooky-cutter?branch=master)
