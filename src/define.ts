@@ -29,7 +29,7 @@ function define<Result>(config: Config<Result>): Factory<Result> {
     const values = Object.assign({}, config, override);
 
     for (let key in values) {
-      const value = override[key] ? override[key] : config[key];
+      const value = override.hasOwnProperty(key) ? override[key] : config[key];
 
       if (isFunction(value)) {
         result[key] = value(invocations);

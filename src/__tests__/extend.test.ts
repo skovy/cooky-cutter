@@ -45,6 +45,25 @@ describe("extend", () => {
     });
   });
 
+  test("allows overriding with 'falsy' values", () => {
+    const model = define<Model>({
+      id: sequence
+    });
+
+    const user = extend<Model, User>(model, {
+      firstName: "Bob",
+      age: 42,
+      admin: true
+    });
+
+    expect(user({ firstName: undefined, admin: false, age: 0 })).toEqual({
+      id: 1,
+      firstName: undefined,
+      admin: false,
+      age: 0
+    });
+  });
+
   test("allows overriding the factory with the config", () => {
     const model = define<Model>({
       id: sequence,

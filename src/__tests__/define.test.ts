@@ -65,7 +65,7 @@ describe("define", () => {
     });
   });
 
-  test("handles nested factores", () => {
+  test("handles nested factories", () => {
     const user = define<User>({
       firstName: "Bob",
       age: 42
@@ -117,6 +117,20 @@ describe("define", () => {
       firstName: "Sarah",
       age: 42,
       admin: true
+    });
+  });
+
+  test("allows overriding with 'falsy' values", () => {
+    const user = define<User>({
+      firstName: "Bob",
+      age: 42,
+      admin: true
+    });
+
+    expect(user({ firstName: undefined, admin: false, age: 0 })).toEqual({
+      firstName: undefined,
+      admin: false,
+      age: 0
     });
   });
 });

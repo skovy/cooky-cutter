@@ -25,7 +25,9 @@ function extend<Base, Result extends Base>(
     for (let k in config) {
       // TODO: the type of k is not properly inferred
       let key = k as Extract<keyof Result, string>;
-      const value = override[key] ? override[key] : config[key as string];
+      const value = override.hasOwnProperty(key)
+        ? override[key]
+        : config[key as string];
 
       if (isFunction(value)) {
         // TODO: find a better way to distinguish AttributeFunction vs Factory
