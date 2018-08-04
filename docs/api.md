@@ -19,6 +19,16 @@ Extend an existing cooky-cutter factory. For examples, see [extending factories]
 | config      | `Object`  | [Configuration object](api#configuration-object) |
 | **Returns** | `Factory` | [Factory function](api#factory-function)         |
 
+## array
+
+Uses an existing cooky-cutter factory to create arrays. For examples, see [creating array of objects](define#creating-array-of-objects).
+
+| Param       | Type           | Description                                                |
+| ----------- | -------------- | ---------------------------------------------------------- |
+| factory     | `Factory`      | Existing cooky-cutter factory                              |
+| size        | `SizeConfig`   | [Size configuration object](api#size-configuration-object) |
+| **Returns** | `ArrayFactory` | [Array factory function](api#array-factory-function)       |
+
 ## Factory function
 
 The return value of `define` and `extend`. It can be invoked any number of times
@@ -30,6 +40,18 @@ parameter to override the original configuration.
 | ----------- | -------- | ------------------------------------------------ |
 | override    | `Object` | [Configuration object](api#configuration-object) |
 | **Returns** | `Object` | Matches the configuration specifications         |
+
+## Array factory function
+
+The return value of `array`. It can be invoked any number of times
+to create a new array with objects representing a given type following the configuration
+object specifications. The function also accepts an optional `override`
+parameter to override the original configuration.
+
+| Param       | Type       | Description                                          |
+| ----------- | ---------- | ---------------------------------------------------- |
+| override    | `Object`   | [Configuration object](api#configuration-object)     |
+| **Returns** | `Object[]` | Each object matches the configuration specifications |
 
 ## Configuration object
 
@@ -48,3 +70,12 @@ Each attribute can be:
 !> Prefer composing factories over hardcoding `object` attributes. Hardcoded
 objects will be identical across all factory invocations so any mutations will
 affect all instances.
+
+## Size configuration object
+
+The size configuration object is an argument to [`array`](api#array). It controls the size of resulting array.
+It can be:
+
+1.  A hardcoded number value. This will be identical for all invocations.
+1.  A function that receives the invocation count as the only argument and returns number. This
+    can be useful to have when arrays of different lengths are needed.
