@@ -1,0 +1,34 @@
+import { Factory, FactoryConfig } from "./define";
+import { isFunction } from "./utils";
+
+type ArrayFactory<T> = (override?: FactoryConfig<T>) => T[];
+
+/**
+ * Define a new array factory function. The return value is a function that can be
+ * invoked as many times as needed to create an array of object of given type.
+ *
+ * @param factory An existing factory object.
+ * @param size Size of target array can either be a static value or a function that receives the
+ * invocation count as the only parameter.
+ */
+function array<Result>(
+  factory: Factory<Result>,
+  size: ((invocation: number) => number) | number = 5
+): ArrayFactory<Result> {
+  let invocations = 0;
+
+  return (override?: FactoryConfig<Result>) => {
+    invocations++;
+    const arr = [];
+    let len = size;
+    if (isFunction(size)) {
+      len = size(invocations);
+    }
+    for (let i = 0; i < len; i++) {
+      arr.push(factory(override));
+    }
+    return arr;
+  };
+}
+
+export { array, ArrayFactory };
