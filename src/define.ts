@@ -32,7 +32,8 @@ function define<Result>(config: Config<Result>): Factory<Result> {
       const value = override.hasOwnProperty(key) ? override[key] : config[key];
 
       if (isFunction(value)) {
-        result[key] = value(invocations);
+        // TODO: find a better way to distinguish AttributeFunction vs Factory
+        result[key] = (value as AttributeFunction<any>)(invocations);
       } else {
         // TODO: Ideally we can avoid this cast.
         result[key] = value as Result[Extract<keyof Result, string>];
