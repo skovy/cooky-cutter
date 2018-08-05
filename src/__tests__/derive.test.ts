@@ -77,4 +77,28 @@ describe("derive", () => {
       fullName: "Bob 2 Smith 2"
     });
   });
+
+  test("throws on circularly derived fields at runtime", () => {
+    const user = define<User>({
+      age: sequence,
+      fullName: derive<User, "lastName", string>(
+        ({ lastName }) => `${lastName}`,
+        "lastName"
+      ),
+      lastName: derive<User, "firstName", string>(
+        ({ firstName }) => `${firstName} Smith`,
+        "firstName"
+      ),
+      firstName: derive<User, "fullName", string>(
+        ({ fullName }) => `Bob ${fullName}`,
+        "fullName"
+      )
+    });
+
+    expect(() => {
+      user();
+    }).toThrowError(
+      "lastName cannot circularly derive itself. Check along this path: lastName->firstName->fullName->lastName"
+    );
+  });
 });

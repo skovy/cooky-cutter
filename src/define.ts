@@ -45,11 +45,17 @@ function compute<
   Key extends keyof Result,
   Values extends Config<Result>,
   Result
->(key: Key, values: Values, result: Result, invocations: number) {
+>(
+  key: Key,
+  values: Values,
+  result: Result,
+  invocations: number,
+  path: Key[] = []
+) {
   const value = values[key];
 
   if (isDerivedFunction<Result, Result[Key]>(value)) {
-    result[key] = value(result, values, invocations);
+    result[key] = value(result, values, invocations, path);
   } else if (isFunction(value)) {
     // TODO: find a better way to distinguish AttributeFunction vs Factory
     result[key] = (value as AttributeFunction<any>)(invocations);

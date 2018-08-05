@@ -3,7 +3,8 @@ import { compute, Config } from "./define";
 type DerivedFunction<Base, Output> = (
   result: Base,
   values: Config<Base>,
-  invocations: number
+  invocations: number,
+  path: (keyof Base)[]
 ) => Output;
 
 type InputObject<Base, InputKeys extends keyof Base> = {
@@ -17,7 +18,8 @@ function derive<Base, InputKeys extends keyof Base, Output>(
   const derivedFunction: DerivedFunction<Base, Output> = (
     result,
     values,
-    invocations
+    invocations,
+    path
   ) => {
     // Construct the input object from all of the dependent values that are
     // needed to derive the value.
@@ -26,7 +28,15 @@ function derive<Base, InputKeys extends keyof Base, Output>(
         // Verify the derived value has been computed, otherwise compute any
         // derived values before continuing.
         if (!result.hasOwnProperty(key)) {
-          compute(key, values, result, invocations);
+          // Verify the field has not already been visited. If it has, there
+          // is a circular reference and it cannot be resolved.
+          if (path.indexOf(key) > -1) {
+            throw `${key} cannot circularly derive itself. Check along this path: ${path.join(
+              "->"
+            )}->${key}`;
+          }
+
+          compute(key, values, result, invocations, [...path, key]);
         }
 
         input[key] = result[key];
