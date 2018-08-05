@@ -34,21 +34,29 @@ function define<Result>(config: Config<Result>): Factory<Result> {
     const values = Object.assign({}, config, override);
 
     for (let key in values) {
-      const value = override.hasOwnProperty(key) ? override[key] : config[key];
-
-      if (isDerivedFunction<Result, Result[typeof key]>(value)) {
-        result[key] = value(result);
-      } else if (isFunction(value)) {
-        // TODO: find a better way to distinguish AttributeFunction vs Factory
-        result[key] = (value as AttributeFunction<any>)(invocations);
-      } else {
-        // TODO: Ideally we can avoid this cast.
-        result[key] = value as Result[Extract<keyof Result, string>];
-      }
+      compute(key, values, result, invocations);
     }
 
     return result;
   };
 }
 
-export { define, AttributeFunction, Config, Factory, FactoryConfig };
+function compute<
+  Key extends keyof Result,
+  Values extends Config<Result>,
+  Result
+>(key: Key, values: Values, result: Result, invocations: number) {
+  const value = values[key];
+
+  if (isDerivedFunction<Result, Result[Key]>(value)) {
+    result[key] = value(result, values, invocations);
+  } else if (isFunction(value)) {
+    // TODO: find a better way to distinguish AttributeFunction vs Factory
+    result[key] = (value as AttributeFunction<any>)(invocations);
+  } else {
+    // TODO: Ideally we can avoid this cast.
+    result[key] = value as Result[Key];
+  }
+}
+
+export { define, compute, AttributeFunction, Config, Factory, FactoryConfig };
