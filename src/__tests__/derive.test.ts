@@ -1,5 +1,4 @@
-import { define } from "../index";
-import { derive } from "../derive";
+import { define, derive, sequence } from "../index";
 
 type User = {
   firstName: string;
@@ -10,7 +9,7 @@ type User = {
 };
 
 describe("derive", () => {
-  test("can compute derived attributes", () => {
+  test("computes derived attributes", () => {
     const user = define<User>({
       firstName: "Bob",
       lastName: "Smith",
@@ -31,7 +30,7 @@ describe("derive", () => {
     });
   });
 
-  test("can compute derived attributes when dependent attributes are defined later", () => {
+  test("computes derived attributes when dependent attributes have not been evaluated", () => {
     const user = define<User>({
       firstName: "Bob",
       fullName: derive<User, "firstName" | "lastName" | "age", string>(
@@ -40,7 +39,6 @@ describe("derive", () => {
         "lastName",
         "age"
       ),
-      // These attributes have not been "evaluated" yet
       lastName: "Smith",
       age: 3
     });
@@ -50,6 +48,33 @@ describe("derive", () => {
       lastName: "Smith",
       age: 3,
       fullName: "Bob Smith 3"
+    });
+  });
+
+  test("computes derived attributes dependent on other derived attributes", () => {
+    const user = define<User>({
+      age: sequence,
+      firstName: derive<User, "age", string>(({ age }) => `Bob ${age}`, "age"),
+      fullName: derive<User, "firstName" | "lastName", string>(
+        ({ firstName, lastName }) => `${firstName} ${lastName}`,
+        "firstName",
+        "lastName"
+      ),
+      lastName: derive<User, "age", string>(({ age }) => `Smith ${age}`, "age")
+    });
+
+    expect(user()).toEqual({
+      age: 1,
+      firstName: "Bob 1",
+      lastName: "Smith 1",
+      fullName: "Bob 1 Smith 1"
+    });
+
+    expect(user()).toEqual({
+      age: 2,
+      firstName: "Bob 2",
+      lastName: "Smith 2",
+      fullName: "Bob 2 Smith 2"
     });
   });
 });
