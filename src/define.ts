@@ -1,7 +1,12 @@
-import { isFunction } from "./utils";
+import { isFunction, isDerivedFunction } from "./utils";
+import { DerivedFunction } from "./derive";
 
 type Config<T> = {
-  [Key in keyof T]: T[Key] | AttributeFunction<T[Key]> | Factory<T[Key]>
+  [Key in keyof T]:
+    | T[Key]
+    | AttributeFunction<T[Key]>
+    | Factory<T[Key]>
+    | DerivedFunction<T, T[Key]>
 };
 
 type AttributeFunction<T> = (invocation: number) => T;
@@ -31,7 +36,9 @@ function define<Result>(config: Config<Result>): Factory<Result> {
     for (let key in values) {
       const value = override.hasOwnProperty(key) ? override[key] : config[key];
 
-      if (isFunction(value)) {
+      if (isDerivedFunction<Result, Result[typeof key]>(value)) {
+        result[key] = value(result);
+      } else if (isFunction(value)) {
         // TODO: find a better way to distinguish AttributeFunction vs Factory
         result[key] = (value as AttributeFunction<any>)(invocations);
       } else {
