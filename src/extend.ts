@@ -1,5 +1,5 @@
 import { Factory, Config, FactoryConfig, AttributeFunction } from "./index";
-import { isFunction, DiffProperties } from "./utils";
+import { isAttributeFunction, DiffProperties } from "./utils";
 
 /**
  * Define a new factory function from an existing fatory. The return value is a
@@ -29,7 +29,7 @@ function extend<Base, Result extends Base>(
         ? override[key]
         : config[key as string];
 
-      if (isFunction(value)) {
+      if (isAttributeFunction(value)) {
         // TODO: find a better way to distinguish AttributeFunction vs Factory
         result[key] = (value as AttributeFunction<any>)(invocations);
       } else {

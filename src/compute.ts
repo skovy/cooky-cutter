@@ -1,5 +1,9 @@
-import { isFunction, isDerivedFunction } from "./utils";
-import { Config, AttributeFunction } from "./define";
+import {
+  isAttributeFunction,
+  isDerivedFunction,
+  isFactoryFunction
+} from "./utils";
+import { Config } from "./define";
 
 function compute<
   Key extends keyof Result,
@@ -16,11 +20,11 @@ function compute<
 
   if (isDerivedFunction<Result, Result[Key]>(value)) {
     result[key] = value(result, values, invocations, path);
-  } else if (isFunction(value)) {
-    // TODO: find a better way to distinguish AttributeFunction vs Factory
-    result[key] = (value as AttributeFunction<any>)(invocations);
+  } else if (isFactoryFunction<Result[Key]>(value)) {
+    result[key] = value();
+  } else if (isAttributeFunction<Result[Key]>(value)) {
+    result[key] = value(invocations);
   } else {
-    // TODO: Ideally we can avoid this cast.
     result[key] = value as Result[Key];
   }
 }

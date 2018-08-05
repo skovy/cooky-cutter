@@ -1,20 +1,18 @@
 import { DerivedFunction } from "./derive";
-
-/**
- * Type guard funciton to determine if the argument passed is a function.
- *
- * @param functionToCheck value to check if it is a function
- */
-const isFunction = (functionToCheck: any): functionToCheck is Function => {
-  return (
-    functionToCheck && {}.toString.call(functionToCheck) === "[object Function]"
-  );
-};
+import { Factory, AttributeFunction } from "./define";
 
 function isDerivedFunction<Base, Output>(
   fn: any
 ): fn is DerivedFunction<Base, Output> {
   return fn && fn.hasOwnProperty("__cooky-cutter-derive");
+}
+
+function isFactoryFunction<Base>(fn: any): fn is Factory<Base> {
+  return fn && fn.hasOwnProperty("__cooky-cutter-factory");
+}
+
+function isAttributeFunction<T>(fn: any): fn is AttributeFunction<T> {
+  return fn && {}.toString.call(fn) === "[object Function]";
 }
 
 // Returns a union of the keys.
@@ -31,4 +29,9 @@ type Diff<T, U> = T extends U ? never : T;
 // into `{ b: number; }`
 type DiffProperties<T, U> = Pick<T, Diff<Keys<T>, Keys<U>>>;
 
-export { isFunction, isDerivedFunction, DiffProperties };
+export {
+  isAttributeFunction,
+  isDerivedFunction,
+  isFactoryFunction,
+  DiffProperties
+};

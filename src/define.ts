@@ -27,7 +27,7 @@ type Factory<T> = (override?: FactoryConfig<T>) => T;
 function define<Result>(config: Config<Result>): Factory<Result> {
   let invocations = 0;
 
-  return (override = {}) => {
+  const factory = (override = {}) => {
     invocations++;
 
     let result = {} as Result;
@@ -39,6 +39,14 @@ function define<Result>(config: Config<Result>): Factory<Result> {
 
     return result;
   };
+
+  // Define a property to differentiate this function during the evaluation
+  // phase when the factory is later invoked.
+  Object.defineProperty(factory, "__cooky-cutter-factory", {
+    value: true
+  });
+
+  return factory;
 }
 
 export { define, AttributeFunction, Config, Factory, FactoryConfig };
