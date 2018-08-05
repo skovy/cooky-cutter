@@ -1,5 +1,5 @@
-import { isFunction, isDerivedFunction } from "./utils";
 import { DerivedFunction } from "./derive";
+import { compute } from "./compute";
 
 type Config<T> = {
   [Key in keyof T]:
@@ -29,8 +29,8 @@ function define<Result>(config: Config<Result>): Factory<Result> {
 
   return (override = {}) => {
     invocations++;
-    let result = {} as Result;
 
+    let result = {} as Result;
     const values = Object.assign({}, config, override);
 
     for (let key in values) {
@@ -41,28 +41,4 @@ function define<Result>(config: Config<Result>): Factory<Result> {
   };
 }
 
-function compute<
-  Key extends keyof Result,
-  Values extends Config<Result>,
-  Result
->(
-  key: Key,
-  values: Values,
-  result: Result,
-  invocations: number,
-  path: Key[] = []
-) {
-  const value = values[key];
-
-  if (isDerivedFunction<Result, Result[Key]>(value)) {
-    result[key] = value(result, values, invocations, path);
-  } else if (isFunction(value)) {
-    // TODO: find a better way to distinguish AttributeFunction vs Factory
-    result[key] = (value as AttributeFunction<any>)(invocations);
-  } else {
-    // TODO: Ideally we can avoid this cast.
-    result[key] = value as Result[Key];
-  }
-}
-
-export { define, compute, AttributeFunction, Config, Factory, FactoryConfig };
+export { define, AttributeFunction, Config, Factory, FactoryConfig };

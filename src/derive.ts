@@ -1,4 +1,5 @@
-import { compute, Config } from "./define";
+import { Config } from "./define";
+import { compute } from "./compute";
 
 type DerivedFunction<Base, Output> = (
   result: Base,

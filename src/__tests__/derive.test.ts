@@ -5,7 +5,6 @@ type User = {
   lastName: string;
   fullName: string;
   age: number;
-  admin?: boolean;
 };
 
 describe("derive", () => {
