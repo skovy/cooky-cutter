@@ -31,10 +31,25 @@ describe("derive", () => {
     });
   });
 
+  test("computes derived attributes using extend", () => {
+    const model = define<Model>({
+      id: sequence
+    });
+
+    const post = extend<Model, Post>(model, {
+      title: derive<Post, string>(({ id }) => `Post ${id}`, "id")
+    });
+
+    expect(post()).toEqual({
+      id: 1,
+      title: "Post 1"
+    });
+  });
+
   test("computes derived attributes when dependent attributes have not been evaluated", () => {
     const user = define<User>({
       firstName: "Bob",
-      fullName: derive<User, "firstName" | "lastName" | "age", string>(
+      fullName: derive<User, string>(
         ({ firstName, lastName, age }) => `${firstName} ${lastName} ${age}`,
         "firstName",
         "lastName",

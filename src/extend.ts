@@ -1,4 +1,4 @@
-import { Factory, FactoryConfig, AttributeFunction } from "./index";
+import { Factory, FactoryConfig, AttributeFunction, Config } from "./index";
 import { DiffProperties } from "./utils";
 import { compute } from "./compute";
 import { DerivedFunction } from "./derive";
@@ -40,24 +40,16 @@ function extend<Base, Result extends Base>(
     invocations++;
     let result = base(override as FactoryConfig<Base>) as Result;
 
-    for (let k in config) {
-      // TODO: the type of k is not properly inferred
-      let key = k as Extract<keyof Result, string>;
-      const value = override.hasOwnProperty(key)
-        ? override[key]
-        : config[key as string];
+    // TODO: this cast is necessary for the correct `key` typings and playing
+    // nice with `compute`. Ideally, this can be avoided.
+    const values = Object.assign({}, config, override) as Config<Result>;
 
-      if (isAttributeFunction(value)) {
-        // TODO: find a better way to distinguish AttributeFunction vs Factory
-        result[key] = (value as AttributeFunction<any>)(invocations);
-      } else {
-        // TODO: Ideally we can avoid this cast.
-        result[key] = value as Result[Extract<keyof Result, string>];
-      }
+    for (let key in values) {
+      compute(key, values, result, invocations);
     }
 
     return result;
   };
 }
 
-export { extend };
+export { extend, ExtendConfig };
