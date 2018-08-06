@@ -1,5 +1,7 @@
-import { define, derive, sequence } from "../index";
+import { define, derive, sequence, extend } from "../index";
 
+type Model = { id: number };
+type Post = { title: string } & Model;
 type User = {
   firstName: string;
   lastName: string;
@@ -13,7 +15,7 @@ describe("derive", () => {
       firstName: "Bob",
       lastName: "Smith",
       age: 3,
-      fullName: derive<User, "firstName" | "lastName" | "age", string>(
+      fullName: derive<User, string>(
         ({ firstName, lastName, age }) => `${firstName} ${lastName} ${age}`,
         "firstName",
         "lastName",
@@ -53,13 +55,13 @@ describe("derive", () => {
   test("computes derived attributes dependent on other derived attributes", () => {
     const user = define<User>({
       age: sequence,
-      firstName: derive<User, "age", string>(({ age }) => `Bob ${age}`, "age"),
-      fullName: derive<User, "firstName" | "lastName", string>(
+      firstName: derive<User, string>(({ age }) => `Bob ${age}`, "age"),
+      fullName: derive<User, string>(
         ({ firstName, lastName }) => `${firstName} ${lastName}`,
         "firstName",
         "lastName"
       ),
-      lastName: derive<User, "age", string>(({ age }) => `Smith ${age}`, "age")
+      lastName: derive<User, string>(({ age }) => `Smith ${age}`, "age")
     });
 
     expect(user()).toEqual({
@@ -80,15 +82,15 @@ describe("derive", () => {
   test("throws on circularly derived fields at runtime", () => {
     const user = define<User>({
       age: sequence,
-      fullName: derive<User, "lastName", string>(
+      fullName: derive<User, string>(
         ({ lastName }) => `${lastName}`,
         "lastName"
       ),
-      lastName: derive<User, "firstName", string>(
+      lastName: derive<User, string>(
         ({ firstName }) => `${firstName} Smith`,
         "firstName"
       ),
-      firstName: derive<User, "fullName", string>(
+      firstName: derive<User, string>(
         ({ fullName }) => `Bob ${fullName}`,
         "fullName"
       )

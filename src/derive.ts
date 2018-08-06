@@ -8,13 +8,9 @@ type DerivedFunction<Base, Output> = (
   path: (keyof Base)[]
 ) => Output;
 
-type InputObject<Base, InputKeys extends keyof Base> = {
-  [Key in InputKeys]: Base[Key]
-};
-
-function derive<Base, InputKeys extends keyof Base, Output>(
-  fn: (input: InputObject<Base, InputKeys>) => Output,
-  ...dependentKeys: InputKeys[]
+function derive<Base, Output>(
+  fn: (input: Partial<Base>) => Output,
+  ...dependentKeys: (keyof Base)[]
 ): DerivedFunction<Base, Output> {
   const derivedFunction: DerivedFunction<Base, Output> = (
     result,
@@ -24,7 +20,7 @@ function derive<Base, InputKeys extends keyof Base, Output>(
   ) => {
     // Construct the input object from all of the dependent values that are
     // needed to derive the value.
-    const input = dependentKeys.reduce<InputObject<Base, InputKeys>>(
+    const input = dependentKeys.reduce<Partial<Base>>(
       (input, key) => {
         // Verify the derived value has been computed, otherwise compute any
         // derived values before continuing.
@@ -43,7 +39,7 @@ function derive<Base, InputKeys extends keyof Base, Output>(
         input[key] = result[key];
         return input;
       },
-      {} as InputObject<Base, InputKeys>
+      {} as Partial<Base>
     );
 
     return fn(input);
