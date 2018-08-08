@@ -8,6 +8,19 @@ type DerivedFunction<Base, Output> = (
   path: (keyof Base)[]
 ) => Output;
 
+/**
+ * Compute a single value and assign it to the attribute based off any number
+ * of other attributes defined in the factory. This is useful for deriving a
+ * fields value off of other dynamic field(s) that are not known until a factory
+ * is invoked. A derived field can reference other derived fields, but they
+ * cannot be circularly referenced.
+ *
+ * @param fn a function to reduce all of the dependent keys into a single
+ * dervied value. The return value will be assigned to the attribute.
+ * @param dependentKeys a list of all keys that the derive function is dependent
+ * on. If the key is not defined in this list, it is not guaranteed to be
+ * defined.
+ */
 function derive<Base, Output>(
   fn: (input: Partial<Base>) => Output,
   ...dependentKeys: (keyof Base)[]
