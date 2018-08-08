@@ -27,19 +27,6 @@ describe("array", () => {
     expect(users().length).toBe(10);
   });
 
-  test("allows specifying function for array size", () => {
-    const user = define<User>({
-      age: random,
-      firstName: "Mike"
-    });
-
-    const users = array(user, sequence);
-    expect(users().length).toBe(1);
-    expect(users().length).toBe(2);
-    expect(users().length).toBe(3);
-    expect(users().length).toBe(4);
-  });
-
   test("calls underlying factories during generation", () => {
     const user = define<User>({
       age: sequence,

@@ -23,11 +23,11 @@ Extend an existing cooky-cutter factory. For examples, see [extending factories]
 
 Uses an existing cooky-cutter factory to create arrays. For examples, see [creating array of objects](define#creating-array-of-objects).
 
-| Param       | Type           | Description                                                |
-| ----------- | -------------- | ---------------------------------------------------------- |
-| factory     | `Factory`      | Existing cooky-cutter factory                              |
-| size        | `SizeConfig`   | [Size configuration object](api#size-configuration-object) |
-| **Returns** | `ArrayFactory` | [Array factory function](api#array-factory-function)       |
+| Param       | Type           | Description                                          |
+| ----------- | -------------- | ---------------------------------------------------- |
+| factory     | `Factory`      | Existing cooky-cutter factory                        |
+| size        | `number`       | Size of the array that will be generated             |
+| **Returns** | `ArrayFactory` | [Array factory function](api#array-factory-function) |
 
 ## Factory function
 
@@ -70,12 +70,3 @@ Each attribute can be:
 !> Prefer composing factories over hardcoding `object` attributes. Hardcoded
 objects will be identical across all factory invocations so any mutations will
 affect all instances.
-
-## Size configuration object
-
-The size configuration object is an argument to [`array`](api#array). It controls the size of resulting array.
-It can be:
-
-1.  A hardcoded number value. This will be identical for all invocations.
-1.  A function that receives the invocation count as the only argument and returns number. This
-    can be useful to have when arrays of different lengths are needed.

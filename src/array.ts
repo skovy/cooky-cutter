@@ -1,5 +1,4 @@
 import { Factory, FactoryConfig } from "./define";
-import { isFunction } from "./utils";
 
 type ArrayFactory<T> = (override?: FactoryConfig<T>) => T[];
 
@@ -13,18 +12,11 @@ type ArrayFactory<T> = (override?: FactoryConfig<T>) => T[];
  */
 function array<Result>(
   factory: Factory<Result>,
-  size: ((invocation: number) => number) | number = 5
+  size: number = 5
 ): ArrayFactory<Result> {
-  let invocations = 0;
-
   return (override?: FactoryConfig<Result>) => {
-    invocations++;
     const arr = [];
-    let len = size;
-    if (isFunction(size)) {
-      len = size(invocations);
-    }
-    for (let i = 0; i < len; i++) {
+    for (let i = 0; i < size; i++) {
       arr.push(factory(override));
     }
     return arr;
