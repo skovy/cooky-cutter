@@ -1,7 +1,16 @@
 import { isFunction } from "./utils";
+import { ArrayFactory } from "./array";
+
+type ArrayElement<ArrayType> = ArrayType extends (infer ElementType)[]
+  ? ElementType
+  : never;
 
 type Config<T> = {
-  [Key in keyof T]: T[Key] | AttributeFunction<T[Key]> | Factory<T[Key]>
+  [Key in keyof T]:
+    | T[Key]
+    | AttributeFunction<T[Key]>
+    | Factory<T[Key]>
+    | ArrayFactory<ArrayElement<T[Key]>>
 };
 
 type AttributeFunction<T> = (invocation: number) => T;

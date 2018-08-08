@@ -3,6 +3,7 @@ import { array } from "../array";
 
 type User = { firstName: string; age: number; admin?: boolean };
 type Post = { title: string; user: User };
+type UsersCollection = { users: User[]; role: string };
 
 describe("array", () => {
   test("returns array with 5 elements by default", () => {
@@ -89,5 +90,32 @@ describe("array", () => {
       title: "Test title",
       user: { age: 30, firstName: "Mike" }
     });
+  });
+
+  test("can be used inline with define", () => {
+    const user = define<User>({
+      age: 30,
+      firstName: "Mike"
+    });
+    const moderators = define<UsersCollection>({
+      role: "moderator",
+      users: array(user, 2)
+    });
+
+    expect(moderators().users.length).toBe(2);
+  });
+
+  test("allows overriding initial config", () => {
+    const user = define<User>({
+      age: 30,
+      firstName: "Mike"
+    });
+    const moderators = define<UsersCollection>({
+      role: "moderator",
+      users: array(user, 2)
+    });
+
+    expect(moderators().users.length).toBe(2);
+    expect(moderators({ users: array(user, 3) }).users.length).toBe(3);
   });
 });
