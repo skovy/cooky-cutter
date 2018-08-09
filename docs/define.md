@@ -41,7 +41,7 @@ const user = define<User>({
 
 ### Composing factories
 
-Lastly, factories can reference other factories. In this example, a `Post` has
+Factories can also reference other factories. In this example, a `Post` has
 a `User`. We could manually define this `User`, but since we likely already have
 a `User` factory for elsewhere, we can reference it.
 
@@ -63,3 +63,21 @@ const post = define<Post>({
 ?> **TIP:** Name factories the same as attributes that reference that type to leverage
 [ES6 Object Punning](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#New_notations_in_ECMAScript_2015).
 For example, the user factory above.
+
+### Creating array of objects
+
+Lastly, factories can be used to create an array of objects. This is done by using `array` helper function.
+In this example we will use `User` factory to create arrays of various size.
+
+```typescript
+type User = { firstName: string; age: number };
+
+const user = define<User>({
+  firstName: "Bob",
+  age: 42
+});
+
+const pairOfUsers = array(user, 2);
+
+const trioOfUsers = array(user, 3);
+```

@@ -1,5 +1,10 @@
 import { DerivedFunction } from "./derive";
 import { compute } from "./compute";
+import { ArrayFactory } from "./array";
+
+type ArrayElement<ArrayType> = ArrayType extends (infer ElementType)[]
+  ? ElementType
+  : never;
 
 type Config<T> = {
   [Key in keyof T]:
@@ -7,6 +12,7 @@ type Config<T> = {
     | AttributeFunction<T[Key]>
     | Factory<T[Key]>
     | DerivedFunction<T, T[Key]>
+    | ArrayFactory<ArrayElement<T[Key]>>
 };
 
 type AttributeFunction<T> = (invocation: number) => T;
