@@ -29,6 +29,17 @@ Uses an existing cooky-cutter factory to create arrays. For examples, see [creat
 | size        | `number`       | Size of the array that will be generated             |
 | **Returns** | `ArrayFactory` | [Array factory function](api#array-factory-function) |
 
+## derive
+
+Derive an attribute's value from other fields in the factory. For examples, see
+[deriving values](derive).
+
+| Param         | Type           | Description                                        |
+| ------------- | -------------- | -------------------------------------------------- |
+| fn            | `Function`     | Receives an object with the dependent keys defined |
+| dependentKeys | `String`       | Attributes the derived field is dependent on       |
+| **Returns**   | Attribute Type | Matches the attribute type                         |
+
 ## Factory function
 
 The return value of `define` and `extend`. It can be invoked any number of times

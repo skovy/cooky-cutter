@@ -1,4 +1,5 @@
-import { isFunction } from "./utils";
+import { DerivedFunction } from "./derive";
+import { compute } from "./compute";
 import { ArrayFactory } from "./array";
 
 type ArrayElement<ArrayType> = ArrayType extends (infer ElementType)[]
@@ -10,6 +11,7 @@ type Config<T> = {
     | T[Key]
     | AttributeFunction<T[Key]>
     | Factory<T[Key]>
+    | DerivedFunction<T, T[Key]>
     | ArrayFactory<ArrayElement<T[Key]>>
 };
 
@@ -31,26 +33,26 @@ type Factory<T> = (override?: FactoryConfig<T>) => T;
 function define<Result>(config: Config<Result>): Factory<Result> {
   let invocations = 0;
 
-  return (override = {}) => {
+  const factory = (override = {}) => {
     invocations++;
-    let result = {} as Result;
 
+    let result = {} as Result;
     const values = Object.assign({}, config, override);
 
     for (let key in values) {
-      const value = override.hasOwnProperty(key) ? override[key] : config[key];
-
-      if (isFunction(value)) {
-        // TODO: find a better way to distinguish AttributeFunction vs Factory
-        result[key] = (value as AttributeFunction<any>)(invocations);
-      } else {
-        // TODO: Ideally we can avoid this cast.
-        result[key] = value as Result[Extract<keyof Result, string>];
-      }
+      compute(key, values, result, invocations);
     }
 
     return result;
   };
+
+  // Define a property to differentiate this function during the evaluation
+  // phase when the factory is later invoked.
+  Object.defineProperty(factory, "__cooky-cutter-factory", {
+    value: true
+  });
+
+  return factory;
 }
 
 export { define, AttributeFunction, Config, Factory, FactoryConfig };

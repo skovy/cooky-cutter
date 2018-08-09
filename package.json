@@ -13,7 +13,8 @@
     "check-types": "npm run build --noEmit",
     "check-formatting": "./node_modules/.bin/prettier --list-different \"src/**/*.ts*\"",
     "precommit": "pretty-quick --staged",
-    "coverage": "nyc report --temp-directory=coverage --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --temp-directory=coverage --reporter=text-lcov | coveralls",
+    "docs": "docsify serve docs"
   },
   "repository": {
     "type": "git",

@@ -4,6 +4,7 @@
   - [Quick Start](quick-start.md)
   - [Defining factories](define.md)
   - [Extending factories](extend.md)
+  - [Deriving values](derive.md)
 
 - Recipes
 

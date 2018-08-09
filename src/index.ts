@@ -5,6 +5,7 @@ export {
   Factory,
   FactoryConfig
 } from "./define";
+export { extend, ExtendConfig } from "./extend";
+export { derive } from "./derive";
 export { array, ArrayFactory } from "./array";
-export { extend } from "./extend";
 export { random, sequence } from "./helpers";
