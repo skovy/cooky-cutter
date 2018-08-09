@@ -29,7 +29,7 @@ entity type). Whenever the entity type changes, the factories become invalid!
 ```bash
 npm install --save-dev cooky-cutter
 # or
-yarn add --dev  cooky-cutter
+yarn add --dev cooky-cutter
 ```
 
 ## Basic Usage

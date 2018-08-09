@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.1.0] - 2018-08-08
+
+### Added
+
+- Add `array` for creating an array of objects (from a factory) in [#2](https://github.com/skovy/cooky-cutter/pull/2) by [@kijowski](https://github.com/kijowski)
+- Add `derive` for deriving values dependent on other attributes in [#5](https://github.com/skovy/cooky-cutter/pull/5)
+
 ### Changed
 
 - Update internal version of TypeScript to `3.0.1` in [#3](https://github.com/skovy/cooky-cutter/pull/3)
@@ -86,7 +93,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `random` helper for a random integer
 - `sequence` helper for a sequential integer
 
-[unreleased]: https://github.com/skovy/cooky-cutter/compare/v1.0.3...HEAD
+[unreleased]: https://github.com/skovy/cooky-cutter/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/skovy/cooky-cutter/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/skovy/cooky-cutter/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/skovy/cooky-cutter/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/skovy/cooky-cutter/compare/v1.0.0...v1.0.1

@@ -4,6 +4,13 @@
   "description": "Object factories for testing in TypeScript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "keywords": [
+    "typescript",
+    "test",
+    "testing",
+    "factory",
+    "factories"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "jest --coverage",
