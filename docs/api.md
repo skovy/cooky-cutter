@@ -19,6 +19,16 @@ Extend an existing cooky-cutter factory. For examples, see [extending factories]
 | config      | `Object`  | [Configuration object](api#configuration-object) |
 | **Returns** | `Factory` | [Factory function](api#factory-function)         |
 
+## array
+
+Uses an existing cooky-cutter factory to create arrays. For examples, see [creating array of objects](define#creating-array-of-objects).
+
+| Param       | Type           | Description                                          |
+| ----------- | -------------- | ---------------------------------------------------- |
+| factory     | `Factory`      | Existing cooky-cutter factory                        |
+| size        | `number`       | Size of the array that will be generated             |
+| **Returns** | `ArrayFactory` | [Array factory function](api#array-factory-function) |
+
 ## Factory function
 
 The return value of `define` and `extend`. It can be invoked any number of times
@@ -30,6 +40,18 @@ parameter to override the original configuration.
 | ----------- | -------- | ------------------------------------------------ |
 | override    | `Object` | [Configuration object](api#configuration-object) |
 | **Returns** | `Object` | Matches the configuration specifications         |
+
+## Array factory function
+
+The return value of `array`. It can be invoked any number of times
+to create a new array with objects representing a given type following the configuration
+object specifications. The function also accepts an optional `override`
+parameter to override the original configuration.
+
+| Param       | Type       | Description                                          |
+| ----------- | ---------- | ---------------------------------------------------- |
+| override    | `Object`   | [Configuration object](api#configuration-object)     |
+| **Returns** | `Object[]` | Each object matches the configuration specifications |
 
 ## Configuration object
 
