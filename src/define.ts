@@ -19,7 +19,12 @@ type AttributeFunction<T> = (invocation: number) => T;
 
 type FactoryConfig<T> = Partial<Config<T>>;
 
-type Factory<T> = (override?: FactoryConfig<T>) => T;
+const FACTORY_FUNCTION_KEY = "factory";
+
+interface Factory<T> {
+  (override?: FactoryConfig<T>): T;
+  __cooky_cutter: typeof FACTORY_FUNCTION_KEY;
+}
 
 /**
  * Define a new factory function. The return value is a function that can be
@@ -48,11 +53,16 @@ function define<Result>(config: Config<Result>): Factory<Result> {
 
   // Define a property to differentiate this function during the evaluation
   // phase when the factory is later invoked.
-  Object.defineProperty(factory, "__cooky-cutter-factory", {
-    value: true
-  });
+  factory.__cooky_cutter = "factory" as typeof FACTORY_FUNCTION_KEY;
 
   return factory;
 }
 
-export { define, AttributeFunction, Config, Factory, FactoryConfig };
+export {
+  define,
+  AttributeFunction,
+  Config,
+  Factory,
+  FactoryConfig,
+  FACTORY_FUNCTION_KEY
+};
