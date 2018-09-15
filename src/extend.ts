@@ -2,6 +2,7 @@ import { Factory, FactoryConfig, AttributeFunction, Config } from "./index";
 import { DiffProperties } from "./utils";
 import { compute } from "./compute";
 import { DerivedFunction } from "./derive";
+import { FACTORY_FUNCTION_KEY } from "./define";
 
 // Helper specific to extending factories. Any keys required in the base type
 // should be optional in the result config because they've already been defined
@@ -36,7 +37,7 @@ function extend<Base, Result extends Base>(
 ): Factory<Result> {
   let invocations = 0;
 
-  return (override = {}) => {
+  const factory = (override = {}) => {
     invocations++;
     let result = base(override as FactoryConfig<Base>) as Result;
 
@@ -50,6 +51,12 @@ function extend<Base, Result extends Base>(
 
     return result;
   };
+
+  // Define a property to differentiate this function during the evaluation
+  // phase when the factory is later invoked.
+  factory.__cooky_cutter = "factory" as typeof FACTORY_FUNCTION_KEY;
+
+  return factory;
 }
 
 export { extend, ExtendConfig };
