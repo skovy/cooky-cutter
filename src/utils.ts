@@ -1,18 +1,18 @@
-import { DerivedFunction } from "./derive";
-import { Factory, AttributeFunction } from "./define";
+import { DerivedFunction, DERIVE_FUNCTION_KEY } from "./derive";
+import { Factory, AttributeFunction, FACTORY_FUNCTION_KEY } from "./define";
 
 // Determine if the function is an internal derive function based on properties
-// define on the function.
+// defined on the function.
 function isDerivedFunction<Base, Output>(
   fn: any
 ): fn is DerivedFunction<Base, Output> {
-  return fn && fn.hasOwnProperty("__cooky-cutter-derive");
+  return fn && fn.__cooky_cutter === DERIVE_FUNCTION_KEY;
 }
 
 // Determine if the function is an internal factory function based on properties
-// define on the function.
+// defined on the function.
 function isFactoryFunction<Base>(fn: any): fn is Factory<Base> {
-  return fn && fn.hasOwnProperty("__cooky-cutter-factory");
+  return fn && fn.__cooky_cutter === FACTORY_FUNCTION_KEY;
 }
 
 // Determine if the function is an attribute function. Since this is end-user
