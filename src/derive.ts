@@ -1,12 +1,17 @@
 import { Config } from "./define";
 import { compute } from "./compute";
 
-type DerivedFunction<Base, Output> = (
-  result: Base,
-  values: Config<Base>,
-  invocations: number,
-  path: (keyof Base)[]
-) => Output;
+const DERIVE_FUNCTION_KEY = "derived";
+
+interface DerivedFunction<Base, Output> {
+  (
+    result: Base,
+    values: Config<Base>,
+    invocations: number,
+    path: (keyof Base)[]
+  ): Output;
+  __cooky_cutter: typeof DERIVE_FUNCTION_KEY;
+}
 
 /**
  * Compute a single value and assign it to the attribute based off any number
@@ -25,12 +30,12 @@ function derive<Base, Output>(
   fn: (input: Partial<Base>) => Output,
   ...dependentKeys: (keyof Base)[]
 ): DerivedFunction<Base, Output> {
-  const derivedFunction: DerivedFunction<Base, Output> = (
+  const derivedFunction: DerivedFunction<Base, Output> = function(
     result,
     values,
     invocations,
     path
-  ) => {
+  ) {
     // Construct the input object from all of the dependent values that are
     // needed to derive the value.
     const input = dependentKeys.reduce<Partial<Base>>(
@@ -60,11 +65,9 @@ function derive<Base, Output>(
 
   // Define a property to differentiate this function during the evaluation
   // phase when the factory is later invoked.
-  Object.defineProperty(derivedFunction, "__cooky-cutter-derive", {
-    value: true
-  });
+  derivedFunction.__cooky_cutter = DERIVE_FUNCTION_KEY as typeof DERIVE_FUNCTION_KEY;
 
   return derivedFunction;
 }
 
-export { derive, DerivedFunction };
+export { derive, DerivedFunction, DERIVE_FUNCTION_KEY };
