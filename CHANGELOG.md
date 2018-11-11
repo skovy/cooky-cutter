@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.2.0] - 2018-11-10
+
+### Changed
+
+- Upgrade to `typescript@3.1.6` and update the internals to use proper function
+  properties in [#7](https://github.com/skovy/cooky-cutter/pull/7)
+
+### Fixed
+
+- Run `npm audit fix` to resolve `devDependency` vulnerabilities in [#8](https://github.com/skovy/cooky-cutter/pull/8)
+
 ## [1.1.0] - 2018-08-08
 
 ### Added
@@ -93,7 +104,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `random` helper for a random integer
 - `sequence` helper for a sequential integer
 
-[unreleased]: https://github.com/skovy/cooky-cutter/compare/v1.1.0...HEAD
+[unreleased]: https://github.com/skovy/cooky-cutter/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/skovy/cooky-cutter/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/skovy/cooky-cutter/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/skovy/cooky-cutter/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/skovy/cooky-cutter/compare/v1.0.1...v1.0.2
