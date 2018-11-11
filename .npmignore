@@ -15,3 +15,6 @@ coverage/
 
 # Avoid publishing the documentation
 docs/
+
+# Avoid publish editor config for VSCode
+.vscode

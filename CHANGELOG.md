@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Properly ignore `.vscode` config when publishing to npm in [#9](https://github.com/skovy/cooky-cutter/pull/9)
+
 ## [1.2.0] - 2018-11-10
 
 ### Changed
