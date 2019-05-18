@@ -45,7 +45,7 @@ function define<Result>(config: Config<Result>): Factory<Result> {
     const values = Object.assign({}, config, override);
 
     for (let key in values) {
-      compute(key, values, result, invocations);
+      compute(key, values, result, invocations, [], override);
     }
 
     return result;
@@ -61,6 +61,7 @@ function define<Result>(config: Config<Result>): Factory<Result> {
 export {
   define,
   AttributeFunction,
+  ArrayElement,
   Config,
   Factory,
   FactoryConfig,

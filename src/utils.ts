@@ -1,5 +1,6 @@
 import { DerivedFunction, DERIVE_FUNCTION_KEY } from "./derive";
 import { Factory, AttributeFunction, FACTORY_FUNCTION_KEY } from "./define";
+import { ARRAY_FACTORY_KEY, ArrayFactoryPassThrough } from "./array";
 
 // Determine if the function is an internal derive function based on properties
 // defined on the function.
@@ -13,6 +14,14 @@ function isDerivedFunction<Base, Output>(
 // defined on the function.
 function isFactoryFunction<Base>(fn: any): fn is Factory<Base> {
   return fn && fn.__cooky_cutter === FACTORY_FUNCTION_KEY;
+}
+
+// Determine if the function is an internal array factory function based on
+// properties defined on the function.
+function isArrayFactoryFunction<Base>(
+  fn: any
+): fn is ArrayFactoryPassThrough<Base> {
+  return fn && fn.__cooky_cutter === ARRAY_FACTORY_KEY;
 }
 
 // Determine if the function is an attribute function. Since this is end-user
@@ -41,5 +50,6 @@ export {
   isAttributeFunction,
   isDerivedFunction,
   isFactoryFunction,
+  isArrayFactoryFunction,
   DiffProperties
 };

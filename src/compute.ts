@@ -1,7 +1,8 @@
 import {
   isAttributeFunction,
   isDerivedFunction,
-  isFactoryFunction
+  isFactoryFunction,
+  isArrayFactoryFunction
 } from "./utils";
 import { Config } from "./define";
 import { getConfig } from "./config";
@@ -19,7 +20,8 @@ function compute<
   values: Values,
   result: Result,
   invocations: number,
-  path: Key[] = []
+  path: Key[] = [],
+  override: Partial<Result> = {}
 ) {
   const value = values[key];
 
@@ -30,10 +32,15 @@ function compute<
     result[key] = value(result, values, invocations, path);
   } else if (isFactoryFunction<Result[Key]>(value)) {
     result[key] = value();
+  } else if (isArrayFactoryFunction<Result[Key]>(value)) {
+    result[key] = value();
   } else if (isAttributeFunction<Result[Key]>(value)) {
     result[key] = value(invocations);
   } else {
-    warnAboutHardCodedValues(key, value);
+    if (!(key in override)) {
+      warnAboutHardCodedValues([key, ...path], value);
+    }
+
     result[key] = value as Result[Key];
   }
 }
@@ -44,12 +51,12 @@ function compute<
  * instances of a factory. Check for objects and arrays and by default display
  * a warning.
  */
-const warnAboutHardCodedValues = <Key, Value>(key: Key, value: Value) => {
+const warnAboutHardCodedValues = <Key, Value>(path: Key[], value: Value) => {
   let message: string | undefined;
   if (Array.isArray(value)) {
-    message = `\`${key}\` contains a hard-coded array.`;
+    message = `\`${path.join(".")}\` contains a hard-coded array.`;
   } else if (typeof value === "object" && value !== null) {
-    message = `\`${key}\` contains a hard-coded object.`;
+    message = `\`${path.join(".")}\` contains a hard-coded object.`;
   }
 
   const { errorOnHardCodedValues } = getConfig();
@@ -58,6 +65,7 @@ const warnAboutHardCodedValues = <Key, Value>(key: Key, value: Value) => {
     message += ` It will be shared across all instances of this factory. Consider using a factory function.`;
 
     if (errorOnHardCodedValues) {
+      console.trace();
       throw message;
     } else {
       console.warn(message);
