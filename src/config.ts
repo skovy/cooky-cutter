@@ -1,6 +1,6 @@
 interface Configuration {
   /**
-   * Enabling this setting will convert throw (rather than warn) when an object
+   * Enabling this setting will throw (rather than warn) when an object
    * or array is hard-coded in the configuration for a factory (not in the
    * override). It's strongly discouraged to use a shared instance of an
    * object or an array between different factory instances. If one test case

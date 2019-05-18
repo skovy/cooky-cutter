@@ -15,6 +15,7 @@ your factory. When the types change, the factories become invalid!
 
 ## Features
 
+- 🛠 [Configuration](configure)
 - 🤖 [Define](define) factories
 - ⚙️ [Extend](extend) existing factories
 - 📦 [Arrays](array) of factories
