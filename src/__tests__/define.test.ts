@@ -1,4 +1,5 @@
 import { define } from "../index";
+import { configure } from "../";
 
 type User = { firstName: string; age: number; admin?: boolean };
 type Post = { title: string; user: User; tags?: string[] };
@@ -217,6 +218,47 @@ describe("define", () => {
       // When this warning is ignored, this will be the "expected" (accepted) behavior.
       firstPost.tags!.push("YOLO");
       expect(post().tags).toEqual(["popular", "trending", "YOLO"]);
+    });
+
+    describe("with errorOnHardCodedValues enabled", () => {
+      beforeEach(() => {
+        configure({ errorOnHardCodedValues: true });
+      });
+
+      test("throws about objects", () => {
+        const post = define<Post>({
+          title: "The Best Post Ever",
+          user: {
+            firstName: "Hard-coded",
+            age: 1
+          }
+        });
+
+        expect(() => {
+          post();
+        }).toThrow(
+          "`user` contains a hard-coded object. It will be shared across all instances of this factory. Consider using a factory function."
+        );
+      });
+
+      test("throws about arrays", () => {
+        const user = define<User>({
+          firstName: "Bob",
+          age: 42
+        });
+
+        const post = define<Post>({
+          title: "The Best Post Ever",
+          user,
+          tags: ["popular", "trending"]
+        });
+
+        expect(() => {
+          post();
+        }).toThrow(
+          "`tags` contains a hard-coded array. It will be shared across all instances of this factory. Consider using a factory function."
+        );
+      });
     });
   });
 });
