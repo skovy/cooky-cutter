@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Security
+
+- Update dependencies with vulnerabilities reported via `npm audit` via `npm audit fix --force` [#11](https://github.com/skovy/cooky-cutter/pull/11)
+
 ### Added
 
 - Properly ignore `.vscode` config when publishing to npm in [#9](https://github.com/skovy/cooky-cutter/pull/9)
