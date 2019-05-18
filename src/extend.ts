@@ -46,7 +46,7 @@ function extend<Base, Result extends Base>(
     const values = Object.assign({}, config, override) as Config<Result>;
 
     for (let key in values) {
-      compute(key, values, result, invocations);
+      compute(key, values, result, invocations, [], override);
     }
 
     return result;
