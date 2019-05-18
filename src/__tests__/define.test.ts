@@ -1,10 +1,21 @@
 import { define } from "../index";
+import { configure } from "../";
 
 type User = { firstName: string; age: number; admin?: boolean };
-type Post = { title: string; user: User };
+type Post = { title: string; user: User; tags?: string[] };
 
 describe("define", () => {
-  test("handles hardcoded attributes", () => {
+  let warnSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    warnSpy = jest.spyOn(console, "warn").mockImplementation();
+  });
+
+  afterEach(() => {
+    warnSpy.mockRestore();
+  });
+
+  test("handles hard-coded attributes", () => {
     const user = define<User>({
       firstName: "Bob",
       age: 42
@@ -14,6 +25,8 @@ describe("define", () => {
       firstName: "Bob",
       age: 42
     });
+
+    expect(warnSpy).not.toHaveBeenCalled();
   });
 
   test("handles functional attributes", () => {
@@ -26,6 +39,8 @@ describe("define", () => {
       firstName: "Bob",
       age: 42
     });
+
+    expect(warnSpy).not.toHaveBeenCalled();
   });
 
   test("returns a factory that returns a new instance each invocation", () => {
@@ -38,6 +53,8 @@ describe("define", () => {
     const secondInvocation = user();
 
     expect(firstInvocation).not.toBe(secondInvocation);
+
+    expect(warnSpy).not.toHaveBeenCalled();
   });
 
   test("passes the number of invocations to functional attributes", () => {
@@ -63,6 +80,8 @@ describe("define", () => {
       firstName: "Bob #3",
       age: 126
     });
+
+    expect(warnSpy).not.toHaveBeenCalled();
   });
 
   test("handles nested factories", () => {
@@ -83,6 +102,8 @@ describe("define", () => {
         age: 42
       }
     });
+
+    expect(warnSpy).not.toHaveBeenCalled();
   });
 
   test("allows overriding the initial config", () => {
@@ -105,6 +126,8 @@ describe("define", () => {
       firstName: "Jill",
       age: 43
     });
+
+    expect(warnSpy).not.toHaveBeenCalled();
   });
 
   test("allows defining optional attributes as overrides", () => {
@@ -118,6 +141,8 @@ describe("define", () => {
       age: 42,
       admin: true
     });
+
+    expect(warnSpy).not.toHaveBeenCalled();
   });
 
   test("allows overriding with 'falsy' values", () => {
@@ -131,6 +156,150 @@ describe("define", () => {
       firstName: undefined,
       admin: false,
       age: 0
+    });
+
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  describe("hard-coded values", () => {
+    test("warns about objects", () => {
+      const post = define<Post>({
+        title: "The Best Post Ever",
+        user: {
+          firstName: "Hard-coded",
+          age: 1
+        }
+      });
+
+      const firstPost = post();
+      expect(firstPost).toEqual({
+        title: "The Best Post Ever",
+        user: {
+          firstName: "Hard-coded",
+          age: 1
+        }
+      });
+
+      expect(warnSpy).toBeCalledWith(
+        "`user` contains a hard-coded object. It will be shared across all instances of this factory. Consider using a factory function."
+      );
+
+      // When this warning is ignored, this will be the "expected" (accepted) behavior.
+      firstPost.user.firstName = "Joe";
+      expect(post().user.firstName).toEqual("Joe");
+    });
+
+    test("warns about arrays", () => {
+      const user = define<User>({
+        firstName: "Bob",
+        age: 42
+      });
+
+      const post = define<Post>({
+        title: "The Best Post Ever",
+        user,
+        tags: ["popular", "trending"]
+      });
+
+      const firstPost = post();
+      expect(firstPost).toEqual({
+        title: "The Best Post Ever",
+        tags: ["popular", "trending"],
+        user: {
+          firstName: "Bob",
+          age: 42
+        }
+      });
+
+      expect(warnSpy).toBeCalledWith(
+        "`tags` contains a hard-coded array. It will be shared across all instances of this factory. Consider using a factory function."
+      );
+
+      // When this warning is ignored, this will be the "expected" (accepted) behavior.
+      firstPost.tags!.push("YOLO");
+      expect(post().tags).toEqual(["popular", "trending", "YOLO"]);
+    });
+
+    test("does not warn about objects or arrays as overrides", () => {
+      const user = define<User>({
+        firstName: "Bob",
+        age: 42
+      });
+
+      const post = define<Post>({
+        title: "The Best Post Ever",
+        user
+      });
+
+      const firstPost = post({
+        user: {
+          firstName: "Hard-coded",
+          age: 1
+        },
+        tags: ["popular", "trending"]
+      });
+
+      expect(firstPost).toEqual({
+        title: "The Best Post Ever",
+        user: {
+          firstName: "Hard-coded",
+          age: 1
+        },
+        tags: ["popular", "trending"]
+      });
+
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    describe("with errorOnHardCodedValues enabled", () => {
+      let traceSpy: jest.SpyInstance;
+
+      beforeEach(() => {
+        configure({ errorOnHardCodedValues: true });
+
+        traceSpy = jest.spyOn(console, "trace").mockImplementation();
+      });
+
+      afterEach(() => {
+        traceSpy.mockRestore();
+      });
+
+      test("throws about objects", () => {
+        const post = define<Post>({
+          title: "The Best Post Ever",
+          user: {
+            firstName: "Hard-coded",
+            age: 1
+          }
+        });
+
+        expect(() => {
+          post();
+        }).toThrow(
+          "`user` contains a hard-coded object. It will be shared across all instances of this factory. Consider using a factory function."
+        );
+        expect(traceSpy).toHaveBeenCalled();
+      });
+
+      test("throws about arrays", () => {
+        const user = define<User>({
+          firstName: "Bob",
+          age: 42
+        });
+
+        const post = define<Post>({
+          title: "The Best Post Ever",
+          user,
+          tags: ["popular", "trending"]
+        });
+
+        expect(() => {
+          post();
+        }).toThrow(
+          "`tags` contains a hard-coded array. It will be shared across all instances of this factory. Consider using a factory function."
+        );
+        expect(traceSpy).toHaveBeenCalled();
+      });
     });
   });
 });

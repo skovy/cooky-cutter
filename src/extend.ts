@@ -1,5 +1,11 @@
-import { Factory, FactoryConfig, AttributeFunction, Config } from "./index";
-import { DiffProperties } from "./utils";
+import {
+  Factory,
+  FactoryConfig,
+  AttributeFunction,
+  Config,
+  ArrayFactory
+} from "./index";
+import { DiffProperties, ArrayElement } from "./utils";
 import { compute } from "./compute";
 import { DerivedFunction } from "./derive";
 import { FACTORY_FUNCTION_KEY } from "./define";
@@ -18,6 +24,7 @@ type ExtendConfig<Base, Result> = {
     | AttributeFunction<Merge<Base, Result>[Key]>
     | Factory<Merge<Base, Result>[Key]>
     | DerivedFunction<Result, Merge<Base, Result>[Key]>
+    | ArrayFactory<ArrayElement<Merge<Base, Result>[Key]>>
 };
 
 /**
@@ -46,7 +53,7 @@ function extend<Base, Result extends Base>(
     const values = Object.assign({}, config, override) as Config<Result>;
 
     for (let key in values) {
-      compute(key, values, result, invocations);
+      compute(key, values, result, invocations, [], override);
     }
 
     return result;

@@ -1,10 +1,7 @@
 import { DerivedFunction } from "./derive";
 import { compute } from "./compute";
 import { ArrayFactory } from "./array";
-
-type ArrayElement<ArrayType> = ArrayType extends (infer ElementType)[]
-  ? ElementType
-  : never;
+import { ArrayElement } from "./utils";
 
 type Config<T> = {
   [Key in keyof T]:
@@ -45,7 +42,7 @@ function define<Result>(config: Config<Result>): Factory<Result> {
     const values = Object.assign({}, config, override);
 
     for (let key in values) {
-      compute(key, values, result, invocations);
+      compute(key, values, result, invocations, [], override);
     }
 
     return result;
