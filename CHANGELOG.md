@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.3.0] - 2019-05-18
+
 ### Security
 
 - Update dependencies with vulnerabilities reported via `npm audit` via `npm audit fix --force` [#11](https://github.com/skovy/cooky-cutter/pull/11)
@@ -119,7 +121,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `random` helper for a random integer
 - `sequence` helper for a sequential integer
 
-[unreleased]: https://github.com/skovy/cooky-cutter/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/skovy/cooky-cutter/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/skovy/cooky-cutter/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/skovy/cooky-cutter/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/skovy/cooky-cutter/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/skovy/cooky-cutter/compare/v1.0.2...v1.0.3
