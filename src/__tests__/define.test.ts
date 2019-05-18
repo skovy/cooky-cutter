@@ -220,9 +220,48 @@ describe("define", () => {
       expect(post().tags).toEqual(["popular", "trending", "YOLO"]);
     });
 
+    test("does not warn about objects or arrays as overrides", () => {
+      const user = define<User>({
+        firstName: "Bob",
+        age: 42
+      });
+
+      const post = define<Post>({
+        title: "The Best Post Ever",
+        user
+      });
+
+      const firstPost = post({
+        user: {
+          firstName: "Hard-coded",
+          age: 1
+        },
+        tags: ["popular", "trending"]
+      });
+
+      expect(firstPost).toEqual({
+        title: "The Best Post Ever",
+        user: {
+          firstName: "Hard-coded",
+          age: 1
+        },
+        tags: ["popular", "trending"]
+      });
+
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
     describe("with errorOnHardCodedValues enabled", () => {
+      let traceSpy: jest.SpyInstance;
+
       beforeEach(() => {
         configure({ errorOnHardCodedValues: true });
+
+        traceSpy = jest.spyOn(console, "trace").mockImplementation();
+      });
+
+      afterEach(() => {
+        traceSpy.mockRestore();
       });
 
       test("throws about objects", () => {
@@ -239,6 +278,7 @@ describe("define", () => {
         }).toThrow(
           "`user` contains a hard-coded object. It will be shared across all instances of this factory. Consider using a factory function."
         );
+        expect(traceSpy).toHaveBeenCalled();
       });
 
       test("throws about arrays", () => {
@@ -258,6 +298,7 @@ describe("define", () => {
         }).toThrow(
           "`tags` contains a hard-coded array. It will be shared across all instances of this factory. Consider using a factory function."
         );
+        expect(traceSpy).toHaveBeenCalled();
       });
     });
   });
