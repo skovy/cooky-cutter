@@ -4,6 +4,7 @@ import {
   isFactoryFunction
 } from "./utils";
 import { Config } from "./define";
+import { getConfig } from "./config";
 
 // Given a key, the configuration object (with overrides already applied) and
 // the end result object, compute the current value for the given key and write
@@ -44,14 +45,23 @@ function compute<
  * a warning.
  */
 const warnAboutHardCodedValues = <Key, Value>(key: Key, value: Value) => {
+  let message: string | undefined;
   if (Array.isArray(value)) {
-    console.warn(
-      `\`${key}\` contains a hard-coded array. It will be shared across all instances of this factory. Consider using a factory function.`
-    );
+    message = `\`${key}\` contains a hard-coded array.`;
   } else if (typeof value === "object" && value !== null) {
-    console.warn(
-      `\`${key}\` contains a hard-coded object. It will be shared across all instances of this factory. Consider using a factory function.`
-    );
+    message = `\`${key}\` contains a hard-coded object.`;
+  }
+
+  const { errorOnHardCodedValues } = getConfig();
+
+  if (message) {
+    message += ` It will be shared across all instances of this factory. Consider using a factory function.`;
+
+    if (errorOnHardCodedValues) {
+      throw message;
+    } else {
+      console.warn(message);
+    }
   }
 };
 
