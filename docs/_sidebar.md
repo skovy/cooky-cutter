@@ -2,6 +2,7 @@
 
   - [Overview](README.md)
   - [Quick Start](quick-start.md)
+  - [Configuration](configure.md)
   - [Defining factories](define.md)
   - [Extending factories](extend.md)
   - [Arrays of factories](array.md)
