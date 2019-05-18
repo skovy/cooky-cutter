@@ -1,9 +1,11 @@
-import { define, random, sequence } from "../index";
+import { define, random, sequence, extend } from "../index";
 import { array } from "../array";
 
 type User = { firstName: string; age: number; admin?: boolean };
 type Post = { title: string; user: User };
 type UsersCollection = { users: User[]; role: string };
+type Model = { id: number };
+type Thing = { id: number; name: string; users: User[] };
 
 describe("array", () => {
   test("returns array with 5 elements by default", () => {
@@ -104,5 +106,26 @@ describe("array", () => {
 
     expect(moderators().users.length).toBe(2);
     expect(moderators({ users: array(user, 3) }).users.length).toBe(3);
+  });
+
+  test("allows extending an existing factory and use an arrow factory", () => {
+    const model = define<Model>({
+      id: sequence
+    });
+
+    const user = define<User>({
+      age: random,
+      firstName: "Mike"
+    });
+
+    const thing = extend<Model, Thing>(model, {
+      name: "Some Thing",
+      users: array(user, 3)
+    });
+
+    const value = thing();
+    expect(value.id).toBe(1);
+    expect(value.name).toBe("Some Thing");
+    expect(value.users).toHaveLength(3);
   });
 });
