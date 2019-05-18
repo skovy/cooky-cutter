@@ -20,7 +20,7 @@ function compute<
   values: Values,
   result: Result,
   invocations: number,
-  path: Key[] = [],
+  path: Key[],
   override: Partial<Result> = {}
 ) {
   const value = values[key];
@@ -38,7 +38,7 @@ function compute<
     result[key] = value(invocations);
   } else {
     if (!(key in override)) {
-      warnAboutHardCodedValues([key, ...path], value);
+      warnAboutHardCodedValues(key, value);
     }
 
     result[key] = value as Result[Key];
@@ -51,12 +51,12 @@ function compute<
  * instances of a factory. Check for objects and arrays and by default display
  * a warning.
  */
-const warnAboutHardCodedValues = <Key, Value>(path: Key[], value: Value) => {
+const warnAboutHardCodedValues = <Key, Value>(key: Key, value: Value) => {
   let message: string | undefined;
   if (Array.isArray(value)) {
-    message = `\`${path.join(".")}\` contains a hard-coded array.`;
+    message = `\`${key}\` contains a hard-coded array.`;
   } else if (typeof value === "object" && value !== null) {
-    message = `\`${path.join(".")}\` contains a hard-coded object.`;
+    message = `\`${key}\` contains a hard-coded object.`;
   }
 
   const { errorOnHardCodedValues } = getConfig();
