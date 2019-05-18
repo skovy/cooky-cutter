@@ -1,3 +1,4 @@
+export { configure } from "./config";
 export {
   define,
   AttributeFunction,
