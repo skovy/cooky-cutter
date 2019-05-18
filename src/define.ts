@@ -1,10 +1,7 @@
 import { DerivedFunction } from "./derive";
 import { compute } from "./compute";
 import { ArrayFactory } from "./array";
-
-type ArrayElement<ArrayType> = ArrayType extends (infer ElementType)[]
-  ? ElementType
-  : never;
+import { ArrayElement } from "./utils";
 
 type Config<T> = {
   [Key in keyof T]:
@@ -61,7 +58,6 @@ function define<Result>(config: Config<Result>): Factory<Result> {
 export {
   define,
   AttributeFunction,
-  ArrayElement,
   Config,
   Factory,
   FactoryConfig,
