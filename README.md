@@ -7,6 +7,8 @@
 [![npm](https://img.shields.io/npm/v/cooky-cutter.svg)](https://www.npmjs.com/package/cooky-cutter)
 [![npm type definitions](https://img.shields.io/npm/types/cooky-cutter.svg)](https://www.npmjs.com/package/cooky-cutter)
 
+**[Read the Release Annoucement](https://skovy.dev/object-factories-for-testing-in-typescript/)**.
+
 ## The problem
 
 You need to write maintainable tests for JavaScript. The code depends on
