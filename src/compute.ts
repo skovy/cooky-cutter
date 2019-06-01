@@ -21,15 +21,33 @@ function compute<
   result: Result,
   invocations: number,
   path: Key[],
-  override: Partial<Result> = {}
+  override: Partial<Result>,
+  computedKeys: Key[]
 ) {
+  // If this key was already computed (according to the passed array) then skip
+  // this computation. This likely was a result of a `derive` function requiring
+  // this key to be computed to invoke the derived function because it was a
+  // dependency. In these cases, avoid re-computing the value because often
+  // the factories are not idempotent (eg: each call the invocation is
+  // incremented) which can lead to unexpected inconsistencies.
+  if (computedKeys.indexOf(key) >= 0) {
+    return;
+  }
+
   const value = values[key];
 
   // In essence, this is "exhaustively" checking for each type of attribute that
   // can be defined for a given key. Unfortunately it's not truly exhaustive,
   // but would be great to update this to do true exhaustive type checking.
   if (isDerivedFunction<Result, Result[Key]>(value)) {
-    result[key] = value(result, values, invocations, path, override);
+    result[key] = value(
+      result,
+      values,
+      invocations,
+      path,
+      override,
+      computedKeys
+    );
   } else if (isFactoryFunction<Result[Key]>(value)) {
     result[key] = value();
   } else if (isArrayFactoryFunction<Result[Key]>(value)) {
@@ -43,6 +61,9 @@ function compute<
 
     result[key] = value as Result[Key];
   }
+
+  // Mark this key has having it's value computed.
+  computedKeys.push(key);
 }
 
 /**

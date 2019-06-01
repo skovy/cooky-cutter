@@ -9,7 +9,8 @@ interface DerivedFunction<Base, Output> {
     values: Config<Base>,
     invocations: number,
     path: (keyof Base)[],
-    override: Partial<Base>
+    override: Partial<Base>,
+    computedKeys: Array<keyof Base>
   ): Output;
   __cooky_cutter: typeof DERIVE_FUNCTION_KEY;
 }
@@ -36,7 +37,8 @@ function derive<Base extends object, Output>(
     values,
     invocations,
     path,
-    override
+    override,
+    computedKeys
   ) {
     // Construct the input object from all of the dependent values that are
     // needed to derive the value.
@@ -53,7 +55,15 @@ function derive<Base extends object, Output>(
             )}->${key}`;
           }
 
-          compute(key, values, result, invocations, [...path, key], override);
+          compute(
+            key,
+            values,
+            result,
+            invocations,
+            [...path, key],
+            override,
+            computedKeys
+          );
         }
 
         input[key] = result[key];

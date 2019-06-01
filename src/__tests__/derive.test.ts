@@ -117,4 +117,37 @@ describe("derive", () => {
       "lastName cannot circularly derive itself. Check along this path: lastName->firstName->fullName->lastName"
     );
   });
+
+  test("only invokes a function once when deriving", () => {
+    interface Child {
+      id: number;
+    }
+
+    interface Parent {
+      childId: number | null;
+      child?: Child;
+    }
+
+    const child = define<Child>({
+      id: sequence
+    });
+
+    const parent = define<Parent>({
+      childId: derive<Parent, number | null>(
+        ({ child }) => (child ? child.id : null),
+        "child"
+      )
+    });
+
+    expect(
+      parent({
+        child
+      })
+    ).toEqual({
+      childId: 1,
+      child: {
+        id: 1
+      }
+    });
+  });
 });
