@@ -28,7 +28,7 @@ type ExtendConfig<Base, Result> = {
 };
 
 /**
- * Define a new factory function from an existing fatory. The return value is a
+ * Define a new factory function from an existing factory. The return value is a
  * function that can be invoked as many times as needed to create a given type
  * of object. Use the config param to define how the object is generated on each
  * invocation.
@@ -47,13 +47,17 @@ function extend<Base, Result extends Base>(
   const factory = (override = {}) => {
     invocations++;
     let result = base(override as FactoryConfig<Base>) as Result;
+    // The computed keys starts empty (rather than including the base result
+    // keys) because those values should get overridden and recomputed by the
+    // extended values.
+    let computedKeys: Array<keyof Result> = [];
 
     // TODO: this cast is necessary for the correct `key` typings and playing
     // nice with `compute`. Ideally, this can be avoided.
     const values = Object.assign({}, config, override) as Config<Result>;
 
     for (let key in values) {
-      compute(key, values, result, invocations, [], override);
+      compute(key, values, result, invocations, [], override, computedKeys);
     }
 
     return result;

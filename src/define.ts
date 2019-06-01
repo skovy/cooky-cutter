@@ -39,10 +39,11 @@ function define<Result>(config: Config<Result>): Factory<Result> {
     invocations++;
 
     let result = {} as Result;
+    let computedKeys: Array<keyof Result> = [];
     const values = Object.assign({}, config, override);
 
     for (let key in values) {
-      compute(key, values, result, invocations, [], override);
+      compute(key, values, result, invocations, [], override, computedKeys);
     }
 
     return result;
