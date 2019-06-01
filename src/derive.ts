@@ -27,7 +27,7 @@ interface DerivedFunction<Base, Output> {
  * on. If the key is not defined in this list, it is not guaranteed to be
  * defined.
  */
-function derive<Base, Output>(
+function derive<Base extends object, Output>(
   fn: (input: Partial<Base>) => Output,
   ...dependentKeys: (keyof Base)[]
 ): DerivedFunction<Base, Output> {
