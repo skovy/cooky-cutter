@@ -1,5 +1,4 @@
-import { define } from "../index";
-import { configure } from "../";
+import { define, derive, configure } from "../";
 
 type User = { firstName: string; age: number; admin?: boolean };
 type Post = { title: string; user: User; tags?: string[] };
@@ -246,6 +245,30 @@ describe("define", () => {
           age: 1
         },
         tags: ["popular", "trending"]
+      });
+
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    test("does not warn when using derive with an override value", () => {
+      interface Child {
+        id: number;
+      }
+
+      interface Parent {
+        childId: number | null;
+        child?: Child;
+      }
+
+      const parent = define<Parent>({
+        childId: derive<Parent, number | null>(
+          ({ child }) => (child ? child.id : null),
+          "child"
+        )
+      });
+
+      parent({
+        child: { id: 1 }
       });
 
       expect(warnSpy).not.toHaveBeenCalled();
