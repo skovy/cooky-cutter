@@ -1,7 +1,7 @@
 import { DerivedFunction } from "./derive";
 import { compute } from "./compute";
 import { ArrayFactory } from "./array";
-import { ArrayElement } from "./utils";
+import { ArrayElement, isDerivedFunction } from "./utils";
 
 type Config<T> = {
   [Key in keyof T]:
@@ -41,8 +41,18 @@ function define<Result>(config: Config<Result>): Factory<Result> {
     let result = {} as Result;
     const values = Object.assign({}, config, override);
 
+    const derivedComputes: Array<() => void> = [];
     for (let key in values) {
-      compute(key, values, result, invocations, [], override);
+      const bindedCompute = () =>
+        compute(key, values, result, invocations, [], override);
+      if (isDerivedFunction<Result, Result[keyof Result]>(values[key])) {
+        derivedComputes.push(bindedCompute);
+      } else {
+        bindedCompute();
+      }
+    }
+    for (const bindedCompute of derivedComputes) {
+      bindedCompute();
     }
 
     return result;

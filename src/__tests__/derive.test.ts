@@ -117,4 +117,17 @@ describe("derive", () => {
       "lastName cannot circularly derive itself. Check along this path: lastName->firstName->fullName->lastName"
     );
   });
+
+  test("evalutes derived field after other type of fields", () => {
+    let i = 0;
+    const user = define<User>({
+      fullName: derive<User, string>(({ age }) => `Bob ${age} Smith`, "age"),
+      firstName: "Bob",
+      lastName: "Smith",
+      age: () => i++
+    });
+
+    const result = user();
+    expect(result.fullName).toEqual(`Bob ${result.age} Smith`);
+  });
 });
