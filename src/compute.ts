@@ -29,7 +29,7 @@ function compute<
   // can be defined for a given key. Unfortunately it's not truly exhaustive,
   // but would be great to update this to do true exhaustive type checking.
   if (isDerivedFunction<Result, Result[Key]>(value)) {
-    result[key] = value(result, values, invocations, path);
+    result[key] = value(result, values, invocations, path, override);
   } else if (isFactoryFunction<Result[Key]>(value)) {
     result[key] = value();
   } else if (isArrayFactoryFunction<Result[Key]>(value)) {
