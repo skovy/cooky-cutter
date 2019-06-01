@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- An incorrect warning about hard-coded values when using an override value with `derive` [#17](https://github.com/skovy/cooky-cutter/pull/17)
+
 ## [1.3.0] - 2019-05-18
 
 ### Security
@@ -20,7 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - A configuration option `errorOnHardCodedValues` will throw (rather than warn) about hard-coded values [#12](https://github.com/skovy/cooky-cutter/pull/12)
 - Properly ignore `.vscode` config when publishing to npm in [#9](https://github.com/skovy/cooky-cutter/pull/9)
 
-## Fixed
+### Fixed
 
 - The `array` type definitions now match the `extend` type definitions [#12](https://github.com/skovy/cooky-cutter/pull/12)
 
