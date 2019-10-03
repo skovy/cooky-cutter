@@ -139,7 +139,7 @@ describe("array", () => {
       value: "foo"
     });
 
-    const value = array(record, 2);
-    expect(value).toHaveLength(2);
+    const records = array(record, 2);
+    expect(records()).toHaveLength(2);
   });
 });
