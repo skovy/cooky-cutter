@@ -5,6 +5,7 @@ type User = { firstName: string; age: number; admin?: boolean };
 type Post = { title: string; user: User };
 type UsersCollection = { users: User[]; role: string };
 type Model = { id: number };
+type Record = { id: number; value: string };
 type Thing = { id: number; name: string; users: User[] };
 
 describe("array", () => {
@@ -108,7 +109,7 @@ describe("array", () => {
     expect(moderators({ users: array(user, 3) }).users.length).toBe(3);
   });
 
-  test("allows extending an existing factory and use an arrow factory", () => {
+  test("allows extending an existing factory and use an array factory", () => {
     const model = define<Model>({
       id: sequence
     });
@@ -127,5 +128,18 @@ describe("array", () => {
     expect(value.id).toBe(1);
     expect(value.name).toBe("Some Thing");
     expect(value.users).toHaveLength(3);
+  });
+
+  test("allows creating an array factory from extend", () => {
+    const model = define<Model>({
+      id: sequence
+    });
+
+    const record = extend<Model, Record>(model, {
+      value: "foo"
+    });
+
+    const value = array(record, 2);
+    expect(value).toHaveLength(2);
   });
 });
