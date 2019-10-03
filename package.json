@@ -19,7 +19,6 @@
     "postversion": "git push origin master --tags",
     "check-types": "yarn run build --noEmit",
     "check-formatting": "./node_modules/.bin/prettier --list-different \"src/**/*.ts*\"",
-    "precommit": "pretty-quick --staged",
     "coverage": "nyc report --temp-directory=coverage --reporter=text-lcov | coveralls",
     "docs": "docsify serve docs"
   },
@@ -34,15 +33,20 @@
   },
   "homepage": "https://skovy.github.io/cooky-cutter/",
   "devDependencies": {
-    "@types/jest": "^24.0.0",
+    "@types/jest": "^24.0.18",
     "coveralls": "^3.0.2",
     "docsify-cli": "^4.3.0",
-    "husky": "^0.14.3",
+    "husky": "^3.0.8",
     "jest": "^24.8.0",
     "nyc": "^14.1.1",
-    "prettier": "1.13.7",
+    "prettier": "1.18.2",
     "pretty-quick": "^1.6.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.5.1"
+    "typescript": "^3.6.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
