@@ -2,9 +2,9 @@ language: node_js
 node_js:
  - stable
 install:
- - npm install
+ - yarn install
 script:
- - npm run check-types
- - npm test
- - npm run check-formatting
-after_success: npm run coverage
+ - yarn run check-types
+ - yarn test
+ - yarn run check-formatting
+after_success: yarn run coverage
