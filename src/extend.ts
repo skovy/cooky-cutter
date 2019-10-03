@@ -24,7 +24,7 @@ type ExtendConfig<Base, Result> = {
     | AttributeFunction<Merge<Base, Result>[Key]>
     | Factory<Merge<Base, Result>[Key]>
     | DerivedFunction<Result, Merge<Base, Result>[Key]>
-    | ArrayFactory<ArrayElement<Merge<Base, Result>[Key]>>
+    | ArrayFactory<ArrayElement<Merge<Base, Result>[Key]>>;
 };
 
 /**

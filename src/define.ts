@@ -9,7 +9,7 @@ type Config<T> = {
     | AttributeFunction<T[Key]>
     | Factory<T[Key]>
     | DerivedFunction<T, T[Key]>
-    | ArrayFactory<ArrayElement<T[Key]>>
+    | ArrayFactory<ArrayElement<T[Key]>>;
 };
 
 type AttributeFunction<T> = (invocation: number) => T;
