@@ -60,6 +60,9 @@ parameter to override the original configuration.
 | override    | `Object` | [Configuration object](api#configuration-object) |
 | **Returns** | `Object` | Matches the configuration specifications         |
 
+The internal sequence can be reset by calling `resetSequence()` on the factory
+returned from `define` or `extend`.
+
 ## Array factory function
 
 The return value of `array`. It can be invoked any number of times
