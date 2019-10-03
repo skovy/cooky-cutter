@@ -156,6 +156,44 @@ describe("extend", () => {
     expect(warnSpy).not.toHaveBeenCalled();
   });
 
+  describe("resetSequence", () => {
+    interface BaseTask {
+      id: number;
+    }
+
+    interface Task {
+      id: number;
+      position: number;
+    }
+
+    test("it resets the sequence value for only the extended factory (not the base factory)", () => {
+      const baseTask = define<BaseTask>({
+        id: sequence
+      });
+
+      // A Task can have a position within a list
+      const task = extend<BaseTask, Task>(baseTask, {
+        position: sequence
+      });
+
+      expect(task()).toEqual({ id: 1, position: 1 });
+      expect(task()).toEqual({ id: 2, position: 2 });
+
+      task.resetSequence();
+
+      expect(task()).toEqual({ id: 3, position: 1 });
+      expect(task()).toEqual({ id: 4, position: 2 });
+
+      baseTask.resetSequence();
+      task.resetSequence();
+
+      expect(task()).toEqual({ id: 1, position: 1 });
+      expect(task()).toEqual({ id: 2, position: 2 });
+
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+  });
+
   describe("hard-coded values", () => {
     test("warns about objects", () => {
       const model = define<Model>({

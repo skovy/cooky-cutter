@@ -21,6 +21,7 @@ const FACTORY_FUNCTION_KEY = "factory";
 interface Factory<T> {
   (override?: FactoryConfig<T>): T;
   __cooky_cutter: typeof FACTORY_FUNCTION_KEY;
+  resetSequence(): void;
 }
 
 /**
@@ -52,6 +53,9 @@ function define<Result>(config: Config<Result>): Factory<Result> {
   // Define a property to differentiate this function during the evaluation
   // phase when the factory is later invoked.
   factory.__cooky_cutter = "factory" as typeof FACTORY_FUNCTION_KEY;
+  factory.resetSequence = () => {
+    invocations = 0;
+  };
 
   return factory;
 }

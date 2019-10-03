@@ -1,4 +1,4 @@
-import { define, derive, configure } from "../";
+import { define, derive, configure, sequence } from "../";
 
 type User = { firstName: string; age: number; admin?: boolean };
 type Post = { title: string; user: User; tags?: string[] };
@@ -158,6 +158,31 @@ describe("define", () => {
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  describe("resetSequence", () => {
+    interface Task {
+      position: number;
+    }
+
+    test("it resets the sequence value", () => {
+      // A Task can have a position within a list
+      const task = define<Task>({
+        position: sequence
+      });
+
+      expect(task()).toHaveProperty("position", 1);
+      expect(task()).toHaveProperty("position", 2);
+      expect(task()).toHaveProperty("position", 3);
+
+      task.resetSequence();
+
+      expect(task()).toHaveProperty("position", 1);
+      expect(task()).toHaveProperty("position", 2);
+      expect(task()).toHaveProperty("position", 3);
+
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
   });
 
   describe("hard-coded values", () => {
