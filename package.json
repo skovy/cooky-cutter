@@ -14,9 +14,6 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --coverage",
-    "preversion": "yarn test",
-    "version": "yarn run build",
-    "postversion": "git push origin master --tags",
     "check-types": "yarn run build --noEmit",
     "check-formatting": "./node_modules/.bin/prettier --list-different \"src/**/*.ts*\"",
     "coverage": "nyc report --temp-directory=coverage --reporter=text-lcov | coveralls",
@@ -33,6 +30,9 @@
   },
   "homepage": "https://skovy.github.io/cooky-cutter/",
   "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@commitlint/travis-cli": "^8.2.0",
     "@types/jest": "^24.0.18",
     "coveralls": "^3.0.2",
     "docsify-cli": "^4.3.0",
@@ -41,11 +41,13 @@
     "nyc": "^14.1.1",
     "prettier": "1.18.2",
     "pretty-quick": "^1.6.0",
+    "semantic-release": "^15.13.28",
     "ts-jest": "^24.0.2",
     "typescript": "^3.6.3"
   },
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "pretty-quick --staged"
     }
   }

@@ -1,10 +1,22 @@
+if: tag IS blank
+
 language: node_js
-node_js:
- - stable
-install:
- - yarn install
-script:
- - yarn run check-types
- - yarn test
- - yarn run check-formatting
-after_success: yarn run coverage
+node_js: stable
+
+jobs:
+  include:
+    - stage: test
+      name: "Unit tests, type checking, linting, etc."
+      script:
+        - yarn run check-types
+        - yarn test
+        - yarn commitlint-travis
+        - yarn build
+      after_success: yarn run coverage
+    - stage: release
+      name: "Release on npm"
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - yarn semantic-release
