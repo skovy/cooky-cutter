@@ -46,7 +46,10 @@ type Diff<T, U> = T extends U ? never : T;
 // into `{ b: number; }`
 type DiffProperties<T, U> = Pick<T, Diff<Keys<T>, Keys<U>>>;
 
-export type ArrayElement<ArrayType> = ArrayType extends (infer ElementType)[]
+// Given an array, infer the type of it's elements
+export type ArrayElement<ArrayType> = ArrayType extends ReadonlyArray<
+  infer ElementType
+>
   ? ElementType
   : never;
 

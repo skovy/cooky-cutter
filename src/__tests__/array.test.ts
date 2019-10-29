@@ -142,4 +142,22 @@ describe("array", () => {
     const records = array(record, 2);
     expect(records()).toHaveLength(2);
   });
+
+  test("readonly arrays", () => {
+    type Bar = {
+      index: number;
+    };
+
+    type Foo = {
+      readonly bars: ReadonlyArray<Bar>;
+    };
+
+    const barFactory = define<Bar>({ index: sequence });
+
+    const fooFactory = define<Foo>({
+      bars: array(barFactory, 2)
+    });
+
+    expect(fooFactory().bars).toHaveLength(2);
+  });
 });
