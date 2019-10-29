@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+**⚠️ For all versions after `1.4.0` please see the [Releases Tab](https://github.com/skovy/cooky-cutter/releases. `semantic-release` is now used ⚠️**
+
 ## [1.4.0] - 2019-10-02
 
 ### Added
