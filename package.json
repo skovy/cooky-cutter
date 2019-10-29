@@ -18,7 +18,8 @@
     "check-formatting": "./node_modules/.bin/prettier --list-different \"src/**/*.ts*\"",
     "coverage": "nyc report --temp-directory=coverage --reporter=text-lcov | coveralls",
     "docs": "docsify serve docs",
-    "prepack": "yarn build"
+    "prepack": "yarn build",
+    "commit": "commit"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
+    "@commitlint/prompt-cli": "^8.2.0",
     "@commitlint/travis-cli": "^8.2.0",
     "@types/jest": "^24.0.18",
     "coveralls": "^3.0.2",

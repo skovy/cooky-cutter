@@ -16,5 +16,8 @@ coverage/
 # Avoid publishing the documentation
 docs/
 
-# Avoid publish editor config for VSCode
+# Avoid publishing editor config for VSCode
 .vscode
+
+# Avoid publishing commit linting configuration
+commitlint.config.js
