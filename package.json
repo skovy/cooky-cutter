@@ -17,7 +17,8 @@
     "check-types": "yarn run build --noEmit",
     "check-formatting": "./node_modules/.bin/prettier --list-different \"src/**/*.ts*\"",
     "coverage": "nyc report --temp-directory=coverage --reporter=text-lcov | coveralls",
-    "docs": "docsify serve docs"
+    "docs": "docsify serve docs",
+    "prepack": "yarn build"
   },
   "repository": {
     "type": "git",
