@@ -23,7 +23,7 @@ interface DerivedFunction<Base, Output> {
  * cannot be circularly referenced.
  *
  * @param fn a function to reduce all of the dependent keys into a single
- * dervied value. The return value will be assigned to the attribute.
+ * derived value. The return value will be assigned to the attribute.
  * @param dependentKeys a list of all keys that the derive function is dependent
  * on. If the key is not defined in this list, it is not guaranteed to be
  * defined.
