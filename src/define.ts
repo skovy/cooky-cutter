@@ -52,7 +52,7 @@ function define<Result>(config: Config<Result>): Factory<Result> {
 
   // Define a property to differentiate this function during the evaluation
   // phase when the factory is later invoked.
-  factory.__cooky_cutter = "factory" as typeof FACTORY_FUNCTION_KEY;
+  factory.__cooky_cutter = FACTORY_FUNCTION_KEY as typeof FACTORY_FUNCTION_KEY;
   factory.resetSequence = () => {
     invocations = 0;
   };
