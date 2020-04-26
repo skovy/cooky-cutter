@@ -11,8 +11,7 @@ export const ARRAY_FACTORY_KEY = "arrayFactory";
  * invoked as many times as needed to create an array of object of given type.
  *
  * @param factory An existing factory object.
- * @param size Size of target array can either be a static value or a function that receives the
- * invocation count as the only parameter.
+ * @param size Size of target array can be a static value.
  */
 export function array<Result>(
   factory: Factory<Result>,
