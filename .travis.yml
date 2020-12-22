@@ -11,6 +11,7 @@ jobs:
         - yarn run check-types
         - yarn test
         - yarn commitlint-travis
+        - yarn formatting:check
         - yarn build
       after_success: yarn run coverage
     - stage: release
