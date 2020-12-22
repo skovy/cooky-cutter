@@ -12,7 +12,7 @@ describe("array", () => {
   test("returns array with 5 elements by default", () => {
     const user = define<User>({
       age: random,
-      firstName: "Mike"
+      firstName: "Mike",
     });
 
     const users = array(user);
@@ -23,7 +23,7 @@ describe("array", () => {
   test("allows overriding array size", () => {
     const user = define<User>({
       age: random,
-      firstName: "Mike"
+      firstName: "Mike",
     });
 
     const users = array(user, 10);
@@ -33,7 +33,7 @@ describe("array", () => {
   test("calls underlying factories during generation", () => {
     const user = define<User>({
       age: sequence,
-      firstName: (i: number) => `Mike ${i}`
+      firstName: (i: number) => `Mike ${i}`,
     });
 
     const users = array(user, 2);
@@ -49,47 +49,47 @@ describe("array", () => {
   test("allows overriding underlying factory", () => {
     const user = define<User>({
       age: 30,
-      firstName: "Mike"
+      firstName: "Mike",
     });
 
     const users = array(user, 1);
     expect(users({ firstName: "Mickey", admin: true })[0]).toEqual({
       firstName: "Mickey",
       age: 30,
-      admin: true
+      admin: true,
     });
     expect(users({ firstName: "M", age: 20 })[0]).toEqual({
       firstName: "M",
-      age: 20
+      age: 20,
     });
   });
 
   test("allows compound factories", () => {
     const user = define<User>({
       age: 30,
-      firstName: "Mike"
+      firstName: "Mike",
     });
     const post = define<Post>({
       user,
-      title: "Test title"
+      title: "Test title",
     });
 
     const posts = array(post);
     expect(posts().length).toBe(5);
     expect(posts()[0]).toEqual({
       title: "Test title",
-      user: { age: 30, firstName: "Mike" }
+      user: { age: 30, firstName: "Mike" },
     });
   });
 
   test("can be used inline with define", () => {
     const user = define<User>({
       age: 30,
-      firstName: "Mike"
+      firstName: "Mike",
     });
     const moderators = define<UsersCollection>({
       role: "moderator",
-      users: array(user, 2)
+      users: array(user, 2),
     });
 
     expect(moderators().users.length).toBe(2);
@@ -98,11 +98,11 @@ describe("array", () => {
   test("allows overriding initial config", () => {
     const user = define<User>({
       age: 30,
-      firstName: "Mike"
+      firstName: "Mike",
     });
     const moderators = define<UsersCollection>({
       role: "moderator",
-      users: array(user, 2)
+      users: array(user, 2),
     });
 
     expect(moderators().users.length).toBe(2);
@@ -111,17 +111,17 @@ describe("array", () => {
 
   test("allows extending an existing factory and use an array factory", () => {
     const model = define<Model>({
-      id: sequence
+      id: sequence,
     });
 
     const user = define<User>({
       age: random,
-      firstName: "Mike"
+      firstName: "Mike",
     });
 
     const thing = extend<Model, Thing>(model, {
       name: "Some Thing",
-      users: array(user, 3)
+      users: array(user, 3),
     });
 
     const value = thing();
@@ -132,11 +132,11 @@ describe("array", () => {
 
   test("allows creating an array factory from extend", () => {
     const model = define<Model>({
-      id: sequence
+      id: sequence,
     });
 
     const record = extend<Model, Record>(model, {
-      value: "foo"
+      value: "foo",
     });
 
     const records = array(record, 2);
@@ -155,7 +155,7 @@ describe("array", () => {
     const barFactory = define<Bar>({ index: sequence });
 
     const fooFactory = define<Foo>({
-      bars: array(barFactory, 2)
+      bars: array(barFactory, 2),
     });
 
     expect(fooFactory().bars).toHaveLength(2);

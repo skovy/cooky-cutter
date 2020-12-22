@@ -66,5 +66,5 @@ export {
   Config,
   Factory,
   FactoryConfig,
-  FACTORY_FUNCTION_KEY
+  FACTORY_FUNCTION_KEY,
 };

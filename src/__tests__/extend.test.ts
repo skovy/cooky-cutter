@@ -17,24 +17,24 @@ describe("extend", () => {
 
   test("allows extending an existing factory", () => {
     const model = define<Model>({
-      id: sequence
+      id: sequence,
     });
 
     const user = extend<Model, User>(model, {
       firstName: (i: number) => `Bob #${i}`,
-      age: 42
+      age: 42,
     });
 
     expect(user()).toEqual({
       id: 1,
       firstName: "Bob #1",
-      age: 42
+      age: 42,
     });
 
     expect(user()).toEqual({
       id: 2,
       firstName: "Bob #2",
-      age: 42
+      age: 42,
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -42,18 +42,18 @@ describe("extend", () => {
 
   test("allows overriding both the factory and the config", () => {
     const model = define<Model>({
-      id: sequence
+      id: sequence,
     });
 
     const user = extend<Model, User>(model, {
       firstName: "Bob",
-      age: 42
+      age: 42,
     });
 
     expect(user({ id: -1, firstName: "Jill" })).toEqual({
       id: -1,
       firstName: "Jill",
-      age: 42
+      age: 42,
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -61,20 +61,20 @@ describe("extend", () => {
 
   test("allows overriding with 'falsy' values", () => {
     const model = define<Model>({
-      id: sequence
+      id: sequence,
     });
 
     const user = extend<Model, User>(model, {
       firstName: "Bob",
       age: 42,
-      admin: true
+      admin: true,
     });
 
     expect(user({ firstName: undefined, admin: false, age: 0 })).toEqual({
       id: 1,
       firstName: undefined,
       admin: false,
-      age: 0
+      age: 0,
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -83,20 +83,20 @@ describe("extend", () => {
   test("allows overriding the factory with the config", () => {
     const model = define<Model>({
       id: sequence,
-      type: "BaseModel"
+      type: "BaseModel",
     });
 
     const user = extend<Model, User>(model, {
       firstName: "Bob",
       age: 42,
-      type: "User"
+      type: "User",
     });
 
     expect(user()).toEqual({
       id: 1,
       firstName: "Bob",
       age: 42,
-      type: "User"
+      type: "User",
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -104,17 +104,17 @@ describe("extend", () => {
 
   test("allows extending the same factory multiple times", () => {
     const model = define<Model>({
-      id: sequence
+      id: sequence,
     });
 
     const user = extend<Model, User>(model, {
       firstName: "Bob",
-      age: 42
+      age: 42,
     });
 
     const post = extend<Model, Post>(model, {
       title: (i: number) => `My Post #${i}`,
-      user
+      user,
     });
 
     expect(post()).toEqual({
@@ -123,14 +123,14 @@ describe("extend", () => {
       user: {
         id: 2,
         firstName: "Bob",
-        age: 42
-      }
+        age: 42,
+      },
     });
 
     expect(user()).toEqual({
       id: 3,
       firstName: "Bob",
-      age: 42
+      age: 42,
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -138,19 +138,19 @@ describe("extend", () => {
 
   test("allows defining optional attributes as overrides", () => {
     const model = define<Model>({
-      id: sequence
+      id: sequence,
     });
 
     const user = extend<Model, User>(model, {
       firstName: "Bob",
-      age: 42
+      age: 42,
     });
 
     expect(user({ admin: true })).toEqual({
       id: 1,
       firstName: "Bob",
       age: 42,
-      admin: true
+      admin: true,
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -168,12 +168,12 @@ describe("extend", () => {
 
     test("it resets the sequence value for only the extended factory (not the base factory)", () => {
       const baseTask = define<BaseTask>({
-        id: sequence
+        id: sequence,
       });
 
       // A Task can have a position within a list
       const task = extend<BaseTask, Task>(baseTask, {
-        position: sequence
+        position: sequence,
       });
 
       expect(task()).toEqual({ id: 1, position: 1 });
@@ -197,7 +197,7 @@ describe("extend", () => {
   describe("hard-coded values", () => {
     test("warns about objects", () => {
       const model = define<Model>({
-        id: sequence
+        id: sequence,
       });
 
       const post = extend<Model, Post>(model, {
@@ -205,8 +205,8 @@ describe("extend", () => {
         user: {
           id: 1,
           firstName: "Hard-coded",
-          age: 1
-        }
+          age: 1,
+        },
       });
 
       const firstPost = post();
@@ -216,8 +216,8 @@ describe("extend", () => {
         user: {
           id: 1,
           firstName: "Hard-coded",
-          age: 1
-        }
+          age: 1,
+        },
       });
 
       expect(warnSpy).toBeCalledWith(
@@ -231,18 +231,18 @@ describe("extend", () => {
 
     test("warns about arrays", () => {
       const model = define<Model>({
-        id: sequence
+        id: sequence,
       });
 
       const user = extend<Model, User>(model, {
         firstName: "Bob",
-        age: 42
+        age: 42,
       });
 
       const post = extend<Model, Post>(model, {
         title: "The Best Post Ever",
         user,
-        tags: ["popular", "trending"]
+        tags: ["popular", "trending"],
       });
 
       const firstPost = post();
@@ -253,8 +253,8 @@ describe("extend", () => {
         user: {
           id: 2,
           firstName: "Bob",
-          age: 42
-        }
+          age: 42,
+        },
       });
 
       expect(warnSpy).toBeCalledWith(
@@ -268,26 +268,26 @@ describe("extend", () => {
 
     test("does not warn about objects or arrays as overrides", () => {
       const model = define<Model>({
-        id: sequence
+        id: sequence,
       });
 
       const user = extend<Model, User>(model, {
         firstName: "Bob",
-        age: 42
+        age: 42,
       });
 
       const post = extend<Model, Post>(model, {
         title: "The Best Post Ever",
-        user
+        user,
       });
 
       const firstPost = post({
         user: {
           id: 2,
           firstName: "Hard-coded",
-          age: 1
+          age: 1,
         },
-        tags: ["popular", "trending"]
+        tags: ["popular", "trending"],
       });
 
       expect(firstPost).toEqual({
@@ -296,9 +296,9 @@ describe("extend", () => {
         user: {
           id: 2,
           firstName: "Hard-coded",
-          age: 1
+          age: 1,
         },
-        tags: ["popular", "trending"]
+        tags: ["popular", "trending"],
       });
 
       expect(warnSpy).not.toHaveBeenCalled();
@@ -319,7 +319,7 @@ describe("extend", () => {
 
       test("throws about objects", () => {
         const model = define<Model>({
-          id: sequence
+          id: sequence,
         });
 
         const post = extend<Model, Post>(model, {
@@ -327,8 +327,8 @@ describe("extend", () => {
           user: {
             id: 1,
             firstName: "Hard-coded",
-            age: 1
-          }
+            age: 1,
+          },
         });
 
         expect(() => {
@@ -341,18 +341,18 @@ describe("extend", () => {
 
       test("throws about arrays", () => {
         const model = define<Model>({
-          id: sequence
+          id: sequence,
         });
 
         const user = extend<Model, User>(model, {
           firstName: "Bob",
-          age: 42
+          age: 42,
         });
 
         const post = extend<Model, Post>(model, {
           title: "The Best Post Ever",
           user,
-          tags: ["popular", "trending"]
+          tags: ["popular", "trending"],
         });
 
         expect(() => {

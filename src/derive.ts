@@ -32,7 +32,7 @@ function derive<Base extends object, Output>(
   fn: (input: Partial<Base>) => Output,
   ...dependentKeys: (keyof Base)[]
 ): DerivedFunction<Base, Output> {
-  const derivedFunction: DerivedFunction<Base, Output> = function(
+  const derivedFunction: DerivedFunction<Base, Output> = function (
     result,
     values,
     invocations,
@@ -42,35 +42,32 @@ function derive<Base extends object, Output>(
   ) {
     // Construct the input object from all of the dependent values that are
     // needed to derive the value.
-    const input = dependentKeys.reduce<Partial<Base>>(
-      (input, key) => {
-        // Verify the derived value has been computed, otherwise compute any
-        // derived values before continuing.
-        if (!result.hasOwnProperty(key)) {
-          // Verify the field has not already been visited. If it has, there
-          // is a circular reference and it cannot be resolved.
-          if (path.indexOf(key) > -1) {
-            throw `${key} cannot circularly derive itself. Check along this path: ${path.join(
-              "->"
-            )}->${key}`;
-          }
-
-          compute(
-            key,
-            values,
-            result,
-            invocations,
-            [...path, key],
-            override,
-            computedKeys
-          );
+    const input = dependentKeys.reduce<Partial<Base>>((input, key) => {
+      // Verify the derived value has been computed, otherwise compute any
+      // derived values before continuing.
+      if (!result.hasOwnProperty(key)) {
+        // Verify the field has not already been visited. If it has, there
+        // is a circular reference and it cannot be resolved.
+        if (path.indexOf(key) > -1) {
+          throw `${key} cannot circularly derive itself. Check along this path: ${path.join(
+            "->"
+          )}->${key}`;
         }
 
-        input[key] = result[key];
-        return input;
-      },
-      {} as Partial<Base>
-    );
+        compute(
+          key,
+          values,
+          result,
+          invocations,
+          [...path, key],
+          override,
+          computedKeys
+        );
+      }
+
+      input[key] = result[key];
+      return input;
+    }, {} as Partial<Base>);
 
     return fn(input);
   };

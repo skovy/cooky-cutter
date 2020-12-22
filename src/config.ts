@@ -14,7 +14,7 @@ interface Configuration {
 }
 
 let config: Configuration = {
-  errorOnHardCodedValues: false
+  errorOnHardCodedValues: false,
 };
 
 /**

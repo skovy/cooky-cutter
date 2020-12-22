@@ -3,7 +3,7 @@ import {
   FactoryConfig,
   AttributeFunction,
   Config,
-  ArrayFactory
+  ArrayFactory,
 } from "./index";
 import { DiffProperties, ArrayElement } from "./utils";
 import { compute } from "./compute";

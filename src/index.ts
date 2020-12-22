@@ -4,7 +4,7 @@ export {
   AttributeFunction,
   Config,
   Factory,
-  FactoryConfig
+  FactoryConfig,
 } from "./define";
 export { extend, ExtendConfig } from "./extend";
 export { derive } from "./derive";
