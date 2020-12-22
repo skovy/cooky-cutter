@@ -7,17 +7,17 @@ describe("helpers", () => {
   describe("sequence", () => {
     test("increments each time a factory is invoked", () => {
       const user = define<User>({
-        age: sequence
+        age: sequence,
       });
 
       expect(user()).toEqual({
-        age: 1
+        age: 1,
       });
       expect(user()).toEqual({
-        age: 2
+        age: 2,
       });
       expect(user()).toEqual({
-        age: 3
+        age: 3,
       });
     });
   });
@@ -25,7 +25,7 @@ describe("helpers", () => {
   describe("random", () => {
     test("returns a random number", () => {
       const user = define<User>({
-        age: random
+        age: random,
       });
 
       const { age } = user();

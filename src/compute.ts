@@ -2,7 +2,7 @@ import {
   isAttributeFunction,
   isDerivedFunction,
   isFactoryFunction,
-  isArrayFactoryFunction
+  isArrayFactoryFunction,
 } from "./utils";
 import { Config } from "./define";
 import { getConfig } from "./config";

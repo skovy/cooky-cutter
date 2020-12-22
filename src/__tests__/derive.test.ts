@@ -20,29 +20,29 @@ describe("derive", () => {
         "firstName",
         "lastName",
         "age"
-      )
+      ),
     });
 
     expect(user()).toEqual({
       firstName: "Bob",
       lastName: "Smith",
       age: 3,
-      fullName: "Bob Smith 3"
+      fullName: "Bob Smith 3",
     });
   });
 
   test("computes derived attributes using extend", () => {
     const model = define<Model>({
-      id: sequence
+      id: sequence,
     });
 
     const post = extend<Model, Post>(model, {
-      title: derive<Post, string>(({ id }) => `Post ${id}`, "id")
+      title: derive<Post, string>(({ id }) => `Post ${id}`, "id"),
     });
 
     expect(post()).toEqual({
       id: 1,
-      title: "Post 1"
+      title: "Post 1",
     });
   });
 
@@ -56,14 +56,14 @@ describe("derive", () => {
         "age"
       ),
       lastName: "Smith",
-      age: 3
+      age: 3,
     });
 
     expect(user()).toEqual({
       firstName: "Bob",
       lastName: "Smith",
       age: 3,
-      fullName: "Bob Smith 3"
+      fullName: "Bob Smith 3",
     });
   });
 
@@ -76,21 +76,21 @@ describe("derive", () => {
         "firstName",
         "lastName"
       ),
-      lastName: derive<User, string>(({ age }) => `Smith ${age}`, "age")
+      lastName: derive<User, string>(({ age }) => `Smith ${age}`, "age"),
     });
 
     expect(user()).toEqual({
       age: 1,
       firstName: "Bob 1",
       lastName: "Smith 1",
-      fullName: "Bob 1 Smith 1"
+      fullName: "Bob 1 Smith 1",
     });
 
     expect(user()).toEqual({
       age: 2,
       firstName: "Bob 2",
       lastName: "Smith 2",
-      fullName: "Bob 2 Smith 2"
+      fullName: "Bob 2 Smith 2",
     });
   });
 
@@ -108,7 +108,7 @@ describe("derive", () => {
       firstName: derive<User, string>(
         ({ fullName }) => `Bob ${fullName}`,
         "fullName"
-      )
+      ),
     });
 
     expect(() => {
@@ -129,25 +129,25 @@ describe("derive", () => {
     }
 
     const child = define<Child>({
-      id: sequence
+      id: sequence,
     });
 
     const parent = define<Parent>({
       childId: derive<Parent, number | null>(
         ({ child }) => (child ? child.id : null),
         "child"
-      )
+      ),
     });
 
     expect(
       parent({
-        child
+        child,
       })
     ).toEqual({
       childId: 1,
       child: {
-        id: 1
-      }
+        id: 1,
+      },
     });
   });
 });

@@ -58,5 +58,5 @@ export {
   isDerivedFunction,
   isFactoryFunction,
   isArrayFactoryFunction,
-  DiffProperties
+  DiffProperties,
 };

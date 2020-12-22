@@ -17,12 +17,12 @@ describe("define", () => {
   test("handles hard-coded attributes", () => {
     const user = define<User>({
       firstName: "Bob",
-      age: 42
+      age: 42,
     });
 
     expect(user()).toEqual({
       firstName: "Bob",
-      age: 42
+      age: 42,
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -31,12 +31,12 @@ describe("define", () => {
   test("handles functional attributes", () => {
     const user = define<User>({
       firstName: () => "Bob",
-      age: () => 42
+      age: () => 42,
     });
 
     expect(user()).toEqual({
       firstName: "Bob",
-      age: 42
+      age: 42,
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -45,7 +45,7 @@ describe("define", () => {
   test("returns a factory that returns a new instance each invocation", () => {
     const user = define<User>({
       firstName: () => "Bob",
-      age: () => 42
+      age: () => 42,
     });
 
     const firstInvocation = user();
@@ -59,25 +59,25 @@ describe("define", () => {
   test("passes the number of invocations to functional attributes", () => {
     const user = define<User>({
       firstName: (i: number) => `Bob #${i}`,
-      age: (i: number) => i * 42
+      age: (i: number) => i * 42,
     });
 
     // First invocation
     expect(user()).toEqual({
       firstName: "Bob #1",
-      age: 42
+      age: 42,
     });
 
     // Second invocation
     expect(user()).toEqual({
       firstName: "Bob #2",
-      age: 84
+      age: 84,
     });
 
     // Third invocation
     expect(user()).toEqual({
       firstName: "Bob #3",
-      age: 126
+      age: 126,
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -86,20 +86,20 @@ describe("define", () => {
   test("handles nested factories", () => {
     const user = define<User>({
       firstName: "Bob",
-      age: 42
+      age: 42,
     });
 
     const post = define<Post>({
       title: "The Best Post Ever",
-      user
+      user,
     });
 
     expect(post()).toEqual({
       title: "The Best Post Ever",
       user: {
         firstName: "Bob",
-        age: 42
-      }
+        age: 42,
+      },
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -108,22 +108,22 @@ describe("define", () => {
   test("allows overriding the initial config", () => {
     const user = define<User>({
       firstName: "Bob",
-      age: 42
+      age: 42,
     });
 
     expect(user({ firstName: "Sarah" })).toEqual({
       firstName: "Sarah",
-      age: 42
+      age: 42,
     });
 
     expect(user({ age: (i: number) => i })).toEqual({
       firstName: "Bob",
-      age: 2
+      age: 2,
     });
 
     expect(user({ firstName: "Jill", age: 43 })).toEqual({
       firstName: "Jill",
-      age: 43
+      age: 43,
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -132,13 +132,13 @@ describe("define", () => {
   test("allows defining optional attributes as overrides", () => {
     const user = define<User>({
       firstName: "Bob",
-      age: 42
+      age: 42,
     });
 
     expect(user({ firstName: "Sarah", admin: true })).toEqual({
       firstName: "Sarah",
       age: 42,
-      admin: true
+      admin: true,
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -148,13 +148,13 @@ describe("define", () => {
     const user = define<User>({
       firstName: "Bob",
       age: 42,
-      admin: true
+      admin: true,
     });
 
     expect(user({ firstName: undefined, admin: false, age: 0 })).toEqual({
       firstName: undefined,
       admin: false,
-      age: 0
+      age: 0,
     });
 
     expect(warnSpy).not.toHaveBeenCalled();
@@ -168,7 +168,7 @@ describe("define", () => {
     test("it resets the sequence value", () => {
       // A Task can have a position within a list
       const task = define<Task>({
-        position: sequence
+        position: sequence,
       });
 
       expect(task()).toHaveProperty("position", 1);
@@ -191,8 +191,8 @@ describe("define", () => {
         title: "The Best Post Ever",
         user: {
           firstName: "Hard-coded",
-          age: 1
-        }
+          age: 1,
+        },
       });
 
       const firstPost = post();
@@ -200,8 +200,8 @@ describe("define", () => {
         title: "The Best Post Ever",
         user: {
           firstName: "Hard-coded",
-          age: 1
-        }
+          age: 1,
+        },
       });
 
       expect(warnSpy).toBeCalledWith(
@@ -216,13 +216,13 @@ describe("define", () => {
     test("warns about arrays", () => {
       const user = define<User>({
         firstName: "Bob",
-        age: 42
+        age: 42,
       });
 
       const post = define<Post>({
         title: "The Best Post Ever",
         user,
-        tags: ["popular", "trending"]
+        tags: ["popular", "trending"],
       });
 
       const firstPost = post();
@@ -231,8 +231,8 @@ describe("define", () => {
         tags: ["popular", "trending"],
         user: {
           firstName: "Bob",
-          age: 42
-        }
+          age: 42,
+        },
       });
 
       expect(warnSpy).toBeCalledWith(
@@ -247,29 +247,29 @@ describe("define", () => {
     test("does not warn about objects or arrays as overrides", () => {
       const user = define<User>({
         firstName: "Bob",
-        age: 42
+        age: 42,
       });
 
       const post = define<Post>({
         title: "The Best Post Ever",
-        user
+        user,
       });
 
       const firstPost = post({
         user: {
           firstName: "Hard-coded",
-          age: 1
+          age: 1,
         },
-        tags: ["popular", "trending"]
+        tags: ["popular", "trending"],
       });
 
       expect(firstPost).toEqual({
         title: "The Best Post Ever",
         user: {
           firstName: "Hard-coded",
-          age: 1
+          age: 1,
         },
-        tags: ["popular", "trending"]
+        tags: ["popular", "trending"],
       });
 
       expect(warnSpy).not.toHaveBeenCalled();
@@ -289,11 +289,11 @@ describe("define", () => {
         childId: derive<Parent, number | null>(
           ({ child }) => (child ? child.id : null),
           "child"
-        )
+        ),
       });
 
       parent({
-        child: { id: 1 }
+        child: { id: 1 },
       });
 
       expect(warnSpy).not.toHaveBeenCalled();
@@ -317,8 +317,8 @@ describe("define", () => {
           title: "The Best Post Ever",
           user: {
             firstName: "Hard-coded",
-            age: 1
-          }
+            age: 1,
+          },
         });
 
         expect(() => {
@@ -332,13 +332,13 @@ describe("define", () => {
       test("throws about arrays", () => {
         const user = define<User>({
           firstName: "Bob",
-          age: 42
+          age: 42,
         });
 
         const post = define<Post>({
           title: "The Best Post Ever",
           user,
-          tags: ["popular", "trending"]
+          tags: ["popular", "trending"],
         });
 
         expect(() => {
